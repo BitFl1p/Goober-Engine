@@ -76,7 +76,11 @@ namespace Create1 {
             this->end = end;
         }
     }; 
-    class Transform
+    class Component {
+    public:
+        virtual void Update(); virtual void Start();
+    };
+    class Transform : public Component
     {
     public:
         Vector3 position, eulerAngles, scale;
@@ -86,28 +90,32 @@ namespace Create1 {
             eulerAngles = Vector3();
             scale = Vector3();
         }
-
+        void Update(); void Start();
     };
     class GameObject
     {
     public:
         Transform transform;
-        void* attachments[];
-        GameObject(void(*Start)(), void* attachments[]) {
-            Start();
-            *(this->attachments) = attachments;
+        Component components[];
+        GameObject(Transform transform, Component components[]) {
+            this->transform = transform;
+            *this->components = *components;
+        }
+        GameObject(Component components[]) {
+            this->transform = Transform();
+            *this->components = *components;
         }
     };
     static Transform camera;
     static class Renderer {
     public:
         
-        static void MakeLines(Line lines[]) {
+        static void MakeLines(Line* lines) {
 
             glColor3f(1.0, 0.0, 1.0);
             glLineWidth(2.5);
             glBegin(GL_LINES);
-            for (int i = 0; i < sizeof(lines); i++) {
+            for (int i = 0; i < 4; i++) {
                 Vector3 start = lines[i].start - camera.position;
                 Vector3 end = lines[i].end - camera.position;
                 
@@ -120,7 +128,7 @@ namespace Create1 {
         }
 
         static void Render() {
-            MakeLines(new Line[4]{  Line(Vector3(0,0, 0),Vector3(0,1,0)),
+            MakeLines(new Line[4]{Line(Vector3(0,0, 0),Vector3(0,1,0)),
                                     Line(Vector3(0,1,0),Vector3(1,1,0)),
                                     Line(Vector3(1,1,0),Vector3(1,0,0)), 
                                     Line(Vector3(1,0,0),Vector3(0,0,0)) });
