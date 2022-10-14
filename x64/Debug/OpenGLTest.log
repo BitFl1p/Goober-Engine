@@ -1,10 +1,13 @@
-﻿  main.cpp
-  The contents of <any> are available only with C++17 or later.
-C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(99,15): warning C4200: nonstandard extension used: zero-sized array in struct/union
-C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(99,15): message : This member will be ignored by a defaulted constructor or copy/move assignment operator
-C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(132,6): warning C4091: 'static ': ignored on left of 'Create1::Renderer' when no variable is declared
-C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(175,6): warning C4091: 'static ': ignored on left of 'Create1::GL' when no variable is declared
-C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(168,47): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(169,39): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\main.cpp(21,59): warning C4305: 'argument': truncation from 'double' to 'float'
-  OpenGLTest.vcxproj -> C:\Users\jumic\source\repos\OpenGLTest\x64\Debug\OpenGLTest.exe
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (OpenGLTest.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  main.cpp
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(95,15): warning C4200: nonstandard extension used: zero-sized array in struct/union
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(95,15): message : This member will be ignored by a defaulted constructor or copy/move assignment operator
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(128,6): warning C4091: 'static ': ignored on left of 'Create1::Renderer' when no variable is declared
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(170,6): warning C4091: 'static ': ignored on left of 'Create1::GL' when no variable is declared
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(163,47): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(164,39): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\main.cpp(24,57): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\main.cpp(27,58): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\main.cpp(30,58): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\main.cpp(33,57): warning C4305: 'argument': truncation from 'double' to 'float'
+  OpenGLTest.vcxproj -> C:\Users\jumic\source\repos\OpenGLTest\x64\Debug\Create1.exe

@@ -1,8 +1,9 @@
 #pragma once
 #include "Create1.h"
+#include "Windows.h"
+#include <map>
 #include <GLFW/glfw3.h>
-#include <time.h> 
-#include <any>
+#include <time.h>
 using namespace std;
 namespace Create1 {
     struct Vector3 {
@@ -20,12 +21,9 @@ namespace Create1 {
         }
         Vector3 Clamp(Vector3 coord, float min, float max) {
 
-            if (coord.x > max) coord.x = max;
-            if (coord.x < min) coord.x = min;
-            if (coord.y > max) coord.y = max;
-            if (coord.y < min) coord.y = min;
-            if (coord.z > max) coord.z = max;
-            if (coord.z < min) coord.z = min;
+            coord.x = coord.x > max ? max : coord.x < min ? min : coord.x;
+            coord.y = coord.y > max ? max : coord.y < min ? min : coord.y;
+            coord.z = coord.z > max ? max : coord.z < min ? min : coord.z;
             return coord;
         }
         Vector3 operator+=(Vector3 other) {
@@ -90,8 +88,6 @@ namespace Create1 {
         }
 
     };
-
-
     class GameObject
     {
     public:
@@ -115,8 +111,8 @@ namespace Create1 {
                 Vector3 start = lines[i].start - camera.position;
                 Vector3 end = lines[i].end - camera.position;
                 
-                glVertex3d(start.y, start.x, start.z);
-                glVertex3d(end.y, end.x, end.z);
+                glVertex3d(start.x, start.y, start.z);
+                glVertex3d(end.x, end.y, end.z);
             }
 
             glEnd();
@@ -153,7 +149,6 @@ namespace Create1 {
 
                 /* Make the window's context current */
                 glfwMakeContextCurrent(window);
-
                 /* Loop until the user closes the window */
                 while (!glfwWindowShouldClose(window))
                 {
