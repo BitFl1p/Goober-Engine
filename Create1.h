@@ -1,9 +1,12 @@
 #pragma once
 #include "Create1.h"
 #include "Windows.h"
+#include "SDL_image.h"
+#include "SDL.h"
 #include <map>
 #include <GLFW/glfw3.h>
 #include <time.h>
+#include <vector>
 using namespace std;
 namespace Create1 {
     struct Vector3 {
@@ -78,9 +81,9 @@ namespace Create1 {
     }; 
     class Component {
     public:
-        virtual void Update(); virtual void Start();
+        virtual void Update() = 0; virtual void Start() = 0;
     };
-    class Transform : public Component
+    class Transform : virtual public Component
     {
     public:
         Vector3 position, eulerAngles, scale;
@@ -90,92 +93,71 @@ namespace Create1 {
             eulerAngles = Vector3();
             scale = Vector3();
         }
-        void Update(); void Start();
+        void Update() {} void Start() {}
     };
     class GameObject
     {
     public:
         Transform transform;
-        Component components[];
-        GameObject(Transform transform, Component components[]) {
+
+        void Update();
+        void init();
+        GameObject(Transform transform, vector<Component*> components) {
             this->transform = transform;
-            *this->components = *components;
+            this->components = components;
         }
-        GameObject(Component components[]) {
+        GameObject(vector<Component*> components) {
             this->transform = Transform();
-            *this->components = *components;
+            this->components = components;
         }
+        GameObject() {}
+    private:
+        vector<Component*> components;
     };
     static Transform camera;
-    static class Renderer {
-    public:
-        
-        static void MakeLines(Line* lines) {
-
-            glColor3f(1.0, 0.0, 1.0);
-            glLineWidth(2.5);
-            glBegin(GL_LINES);
-            for (int i = 0; i < 4; i++) {
-                Vector3 start = lines[i].start - camera.position;
-                Vector3 end = lines[i].end - camera.position;
-                
-                glVertex3d(start.x, start.y, start.z);
-                glVertex3d(end.x, end.y, end.z);
-            }
-
-            glEnd();
-
-        }
-
-        static void Render() {
-            MakeLines(new Line[4]{Line(Vector3(0,0, 0),Vector3(0,1,0)),
-                                    Line(Vector3(0,1,0),Vector3(1,1,0)),
-                                    Line(Vector3(1,1,0),Vector3(1,0,0)), 
-                                    Line(Vector3(1,0,0),Vector3(0,0,0)) });
-        }
-    };
-    float deltaTime;
-    float oldTime;
-    static class GL
+    static float deltaTime;
+    static float oldTime;
+    class GL
 	{
-        public:
-            static int init(void(*update)(), const char* title)
-            {
-                GLFWwindow* window;
+    public:
+        GL();
+        ~GL();
 
-                /* Initialize the library */
-                if (!glfwInit())
-                    return -1;
+        void init(const char* title);
 
-                /* Create a windowed mode window and its OpenGL context */
-                window = glfwCreateWindow(640, 480, title, NULL, NULL);
-                if (!window)
-                {
-                    glfwTerminate();
-                    return -1;
-                }
+        static vector<GameObject> gameObjects;
+        static GameObject MakeObject(GameObject obj);
+        void handleEvents();
+        void update();
+        void render();
+        void clean();
 
-                /* Make the window's context current */
-                glfwMakeContextCurrent(window);
-                /* Loop until the user closes the window */
-                while (!glfwWindowShouldClose(window))
-                {
-
-                    glClear(GL_COLOR_BUFFER_BIT);
-                    Renderer::Render();
-                    /* Swap front and back buffers */
-                    glfwSwapBuffers(window);
-                    update();
-                    /* Poll for and process events */
-                    glfwPollEvents();
-                    deltaTime = clock() * .01 - oldTime;
-                    oldTime = clock() * .01;
-                }
-
-                glfwTerminate();
-                return 0;
-            }
+        bool running() { return isRunning; }
+        
+        static vector<SDL_Texture*> renderTextures;
+        bool isRunning;
+        static SDL_Window *window;
+        static SDL_Renderer *renderer;
+        
     };
-    
+    class Sprite : virtual public Component
+    {
+    public:
+        GameObject parent;
+        const char* sprite;
+        Sprite(GameObject parent, const char* sprite) {
+            this->parent = parent;
+            this->sprite = sprite;
+        }
+        SDL_Texture* texture;
+
+        void Update() {}
+        void Start() {
+            SDL_Surface* surface = IMG_Load(sprite);
+            texture = SDL_CreateTextureFromSurface(GL::renderer, surface);
+            SDL_FreeSurface(surface);
+            GL::renderTextures.emplace_back(texture);
+        }
+    };
 }
 

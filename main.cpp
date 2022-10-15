@@ -1,35 +1,23 @@
 #include "Create1.h"
-#include "Windows.h"
-#include <GLFW/glfw3.h>
 #include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <conio.h>
 
 using namespace std;
 using namespace Create1;
 
 
-void Update();
+GL* game = nullptr;
 
-int main() 
+int main(int argc, char *argv[])
 {
-	GL::init(Update, "title");
-}
+	game = new GL();
 
-void Update() 
-{
-	//camera.position = camera.position + Vector3(0.01, 0.01, 0) * deltaTime;
-	if (GetKeyState('W') & 0x8000) {
-		camera.position = camera.position + Vector3(0, 0.01, 0) * deltaTime;
+	game->init("Bruh");
+
+	while (game->running()) {
+		game->handleEvents();
+		game->update();
+		game->render();
 	}
-	if (GetKeyState('A') & 0x8000) {
-		camera.position = camera.position + Vector3(-0.01, 0, 0) * deltaTime;
-	}
-	if (GetKeyState('S') & 0x8000) {
-		camera.position = camera.position + Vector3(0, -0.01, 0) * deltaTime;
-	}
-	if (GetKeyState('D') & 0x8000) {
-		camera.position = camera.position + Vector3(0.01, 0, 0) * deltaTime;
-	}
+	game->clean();
+	return 0;
 }
