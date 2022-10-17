@@ -2,17 +2,15 @@
 #include <iostream>
 
 using namespace std;
-using namespace Create1;
+using namespace Create;
 
 
 GL* game = nullptr;
-
 int main(int argc, char *argv[])
 {
-	game = new GL();
-
+	GL* game = new GL();
 	game->init("Bruh");
-
+	game->start();
 	while (game->running()) {
 		game->handleEvents();
 		game->update();

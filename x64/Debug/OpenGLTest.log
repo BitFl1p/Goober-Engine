@@ -1,7 +1,6 @@
-﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (OpenGLTest.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  Create1.cpp
-C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.cpp(73,31): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.cpp(74,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+﻿  Create1.cpp
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.cpp(82,31): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.cpp(83,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   Player.cpp
   main.cpp
   Generating Code...

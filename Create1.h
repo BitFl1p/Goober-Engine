@@ -3,12 +3,11 @@
 #include "Windows.h"
 #include "SDL_image.h"
 #include "SDL.h"
-#include <map>
-#include <GLFW/glfw3.h>
 #include <time.h>
+#include <iostream>
 #include <vector>
 using namespace std;
-namespace Create1 {
+namespace Create {
     struct Vector3 {
     public:
         float x, y, z;
@@ -79,8 +78,10 @@ namespace Create1 {
             this->end = end;
         }
     }; 
+    class GameObject;
     class Component {
     public:
+        GameObject* parent = 0;
         virtual void Update() = 0; virtual void Start() = 0;
     };
     class Transform : virtual public Component
@@ -99,9 +100,9 @@ namespace Create1 {
     {
     public:
         Transform transform;
-
+        vector<Component*> components = vector<Component*>{};
         void Update();
-        void init();
+        void Start();
         GameObject(Transform transform, vector<Component*> components) {
             this->transform = transform;
             this->components = components;
@@ -111,8 +112,8 @@ namespace Create1 {
             this->components = components;
         }
         GameObject() {}
-    private:
-        vector<Component*> components;
+       
+        template <class T> bool GetComponent(T& component);
     };
     static Transform camera;
     static float deltaTime;
@@ -126,34 +127,38 @@ namespace Create1 {
         void init(const char* title);
 
         static vector<GameObject> gameObjects;
-        static GameObject MakeObject(GameObject obj);
+        static GameObject MakeObject(GameObject* obj);
         void handleEvents();
+        void start();
         void update();
         void render();
         void clean();
 
         bool running() { return isRunning; }
-        
         static vector<SDL_Texture*> renderTextures;
+        static SDL_Renderer* renderer;
+    private:
+        
         bool isRunning;
-        static SDL_Window *window;
-        static SDL_Renderer *renderer;
+        SDL_Window *window;
+        
         
     };
+    
     class Sprite : virtual public Component
     {
     public:
-        GameObject parent;
+        SDL_Texture* texture;
         const char* sprite;
-        Sprite(GameObject parent, const char* sprite) {
-            this->parent = parent;
+        Sprite(const char* sprite) {
             this->sprite = sprite;
         }
-        SDL_Texture* texture;
+        
 
         void Update() {}
         void Start() {
             SDL_Surface* surface = IMG_Load(sprite);
+            cout << IMG_GetError() << endl;
             texture = SDL_CreateTextureFromSurface(GL::renderer, surface);
             SDL_FreeSurface(surface);
             GL::renderTextures.emplace_back(texture);
