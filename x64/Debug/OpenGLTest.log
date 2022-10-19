@@ -1,7 +1,33 @@
 ﻿  Create1.cpp
-C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.cpp(82,31): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.cpp(83,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(144,52): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(145,52): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(146,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(147,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(158,52): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(159,52): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(160,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(161,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   Player.cpp
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(144,52): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(145,52): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(146,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(147,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(158,52): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(159,52): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(160,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(161,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Player.cpp(16,69): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Player.cpp(17,71): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Player.cpp(18,71): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Player.cpp(19,72): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
   main.cpp
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(144,52): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(145,52): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(146,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(147,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(158,52): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(159,52): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(160,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(161,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   Generating Code...
   OpenGLTest.vcxproj -> C:\Users\jumic\source\repos\OpenGLTest\x64\Debug\Create1.exe

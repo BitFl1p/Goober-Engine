@@ -7,10 +7,16 @@ using namespace Create;
 
 class PlayerInput : virtual public Component {
 public:
+	int count = 0;
+	bool goDown = false;
 	void Start() { cout << "Start" << endl; }
 	void Update() {
-		parent->transform.position = Vector3(0, 0, 0);
-		if(GetKeyState(VK_UP) & 0x8000) cout << "UP" << endl;
+		parent->transform.scale = Vector3(3,3,3);
+		camera.position = parent->transform.position;
+		if(GetKeyState(VK_UP) & 0x8000) parent->transform.position.y -= 5 * DeltaTime();
+		if(GetKeyState(VK_DOWN) & 0x8000) parent->transform.position.y += 5 * DeltaTime();
+		if(GetKeyState(VK_LEFT) & 0x8000) parent->transform.position.x -= 5 * DeltaTime();
+		if(GetKeyState(VK_RIGHT) & 0x8000) parent->transform.position.x += 5 * DeltaTime();
 	}
 };
 

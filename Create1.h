@@ -6,6 +6,7 @@
 #include <time.h>
 #include <iostream>
 #include <vector>
+#include <map>
 using namespace std;
 namespace Create {
     struct Vector3 {
@@ -28,43 +29,19 @@ namespace Create {
             coord.z = coord.z > max ? max : coord.z < min ? min : coord.z;
             return coord;
         }
-        Vector3 operator+=(Vector3 other) {
-            return Vector3(x + other.x, y + other.y, z + other.z);
-        }
-        Vector3 operator-=(Vector3 other) {
-            return Vector3(x - other.x, y - other.y, z - other.z);
-        }
-        Vector3 operator+(Vector3 other) {
-            return Vector3(x + other.x, y + other.y, z + other.z);
-        }
-        Vector3 operator-(Vector3 other) {
-            return Vector3(x - other.x, y - other.y, z - other.z);
-        }
-        
-        Vector3 operator+=(float other) {
-            return Vector3(x + other, y + other, z + other);
-        }
-        Vector3 operator-=(float other) {
-            return Vector3(x - other, y - other, z - other);
-        }
-        Vector3 operator+(float other) {
-            return Vector3(x + other, y + other, z + other);
-        }
-        Vector3 operator-(float other) {
-            return Vector3(x - other, y - other, z - other);
-        }
-        Vector3 operator*=(float other) {
-            return Vector3(x * other, y * other, z * other);
-        }
-        Vector3 operator*(float other) {
-            return Vector3(x * other, y * other, z * other);
-        }
-        Vector3 operator/=(float other) {
-            return Vector3(x / other, y / other, z / other);
-        }
-        Vector3 operator/(float other) {
-            return Vector3(x / other, y / other, z / other);
-        }
+        Vector3& operator+=(const Vector3& other);
+        Vector3 operator+(Vector3 other);
+        Vector3& operator-=(const Vector3& other);
+        Vector3 operator-(Vector3 other);
+        Vector3& operator+=(const float& other);
+        Vector3 operator+(float other); 
+        Vector3& operator-=(const float& other);
+        Vector3 operator-(float other);
+        Vector3& operator*=(const float& other);
+        Vector3 operator*(float other); 
+        Vector3& operator/=(const float& other);
+        Vector3 operator/(float other);
+
     };
     struct Line {
     public:
@@ -92,13 +69,14 @@ namespace Create {
         {
             position = Vector3();
             eulerAngles = Vector3();
-            scale = Vector3();
+            scale = Vector3(1, 1, 1);
         }
         void Update() {} void Start() {}
     };
     class GameObject
     {
     public:
+        double deltaTime;
         Transform transform;
         vector<Component*> components = vector<Component*>{};
         void Update();
@@ -116,8 +94,7 @@ namespace Create {
         template <class T> bool GetComponent(T& component);
     };
     static Transform camera;
-    static float deltaTime;
-    static float oldTime;
+   
     class GL
 	{
     public:
@@ -135,33 +112,54 @@ namespace Create {
         void clean();
 
         bool running() { return isRunning; }
-        static vector<SDL_Texture*> renderTextures;
+        static map<SDL_Texture*, SDL_Rect*> renderTextures;
+        static double* deltaTime;
+        
         static SDL_Renderer* renderer;
+        
+        static SDL_Window* window;
     private:
         
         bool isRunning;
-        SDL_Window *window;
-        
         
     };
-    
+    static double DeltaTime() {
+        return *GL::deltaTime;
+    }
     class Sprite : virtual public Component
     {
     public:
         SDL_Texture* texture;
+        SDL_Rect* rect = new SDL_Rect();
         const char* sprite;
         Sprite(const char* sprite) {
             this->sprite = sprite;
         }
         
 
-        void Update() {}
+        void Update() {
+            int w, h, ww, wh;
+            SDL_QueryTexture(texture, NULL, NULL, &w, &h); 
+            SDL_GetWindowSize(GL::window, &ww, &wh);
+            rect->x = parent->transform.position.x - camera.position.x;
+            rect->y = parent->transform.position.y - camera.position.y;
+            rect->w = w * parent->transform.scale.x;
+            rect->h = h * parent->transform.scale.y;
+            GL::renderTextures[texture] = rect;
+        }
         void Start() {
             SDL_Surface* surface = IMG_Load(sprite);
             cout << IMG_GetError() << endl;
             texture = SDL_CreateTextureFromSurface(GL::renderer, surface);
             SDL_FreeSurface(surface);
-            GL::renderTextures.emplace_back(texture);
+            int w, h, ww, wh;
+            SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+            SDL_GetWindowSize(GL::window, &ww, &wh);
+            rect->x = parent->transform.position.x - camera.position.x;
+            rect->y = parent->transform.position.y - camera.position.y;
+            rect->w = w * parent->transform.scale.x;
+            rect->h = h * parent->transform.scale.y;
+            GL::renderTextures.emplace(texture, rect);
         }
     };
 }

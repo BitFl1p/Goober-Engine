@@ -50,6 +50,7 @@ void GL::handleEvents()
         default: break;
     }
 }
+double* GL::deltaTime = new double;
 vector<GameObject> GL::gameObjects;
 void GameObject::Update() {
     for (auto comp : this->components) (*comp).Update();
@@ -60,8 +61,9 @@ void GameObject::Start() {
 void GL::start() {
     for (auto obj : gameObjects) obj.Start();
 }
-vector<SDL_Texture*> GL::renderTextures;
+map<SDL_Texture*,SDL_Rect*>  GL::renderTextures;
 SDL_Renderer* GL::renderer;
+SDL_Window* GL::window;
 GameObject GL::MakeObject(GameObject* obj) {
     gameObjects.emplace_back(*obj);
     for (auto comp : (*obj).components) comp->parent = obj;
@@ -79,13 +81,12 @@ void GL::update()
     for (GameObject obj : gameObjects) {
         obj.Update();
     }
-    deltaTime = clock() * .01 - oldTime;
-    oldTime = clock() * .01;
+    
 }
 void GL::render() {
     SDL_RenderClear(renderer);
-    for (SDL_Texture* tex : renderTextures) 
-        SDL_RenderCopy(renderer, tex, NULL, NULL);
+    for (auto tex : renderTextures) 
+        SDL_RenderCopy(renderer, tex.first, NULL, tex.second);
     SDL_RenderPresent(renderer);
 
 }
@@ -94,4 +95,59 @@ void GL::clean() {
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
     cout << "Game quit!..." << endl;
+}
+
+Vector3& Vector3::operator+=(const Vector3& other) {
+    this->x = this->x + other.x;
+    this->y = this->y + other.y;
+    this->z = this->z + other.z;
+    return *this;
+}
+Vector3 Vector3::operator+(const Vector3 other) {
+    return *this += other;
+}
+Vector3& Vector3::operator-=(const Vector3& other) {
+    this->x = this->x - other.x;
+    this->y = this->y - other.y;
+    this->z = this->z - other.z;
+    return *this;
+}
+Vector3 Vector3::operator-(const Vector3 other) {
+    return *this -= other;
+}
+Vector3& Vector3::operator+=(const float& other) {
+    this->x = this->x + other;
+    this->y = this->y + other;
+    this->z = this->z + other;
+    return *this;
+}
+Vector3 Vector3::operator+(const float other) {
+    return *this += other;
+}
+Vector3& Vector3::operator-=(const float& other) {
+    this->x = this->x - other;
+    this->y = this->y - other;
+    this->z = this->z - other;
+    return *this;
+}
+Vector3 Vector3::operator-(const float other) {
+    return *this -= other;
+}
+Vector3& Vector3::operator*=(const float& other) {
+    this->x = this->x * other;
+    this->y = this->y * other;
+    this->z = this->z * other;
+    return *this;
+}
+Vector3 Vector3::operator*(const float other) {
+    return *this -= other;
+}
+Vector3& Vector3::operator/=(const float& other) {
+    this->x = this->x * other;
+    this->y = this->y * other;
+    this->z = this->z * other;
+    return *this;
+}
+Vector3 Vector3::operator/(const float other) {
+    return *this -= other;
 }

@@ -1,0 +1,549 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://schemastore.azurewebsites.net/schemas/json/sarif-2.1.0-rtm.5.json",
+  "runs": [
+    {
+      "results": [
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'Create::Sprite::texture' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/jumic/source/repos/OpenGLTest/OpenGLTest/Create1.h"
+                },
+                "region": {
+                  "startLine": 154,
+                  "startColumn": 9,
+                  "endLine": 154,
+                  "endColumn": 9
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "Create::Sprite::{ctor}",
+                  "decoratedName": "??0Sprite@Create@@QEAA@PEBD@Z",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "Create::Sprite::texture"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'Create::GL::window' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/jumic/source/repos/OpenGLTest/OpenGLTest/Create1.cpp"
+                },
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 5,
+                  "endLine": 13,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "Create::GL::{ctor}",
+                  "decoratedName": "??0GL@Create@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "Create::GL::window"
+          }
+        },
+        {
+          "ruleId": "C26495",
+          "message": {
+            "text": "Variable 'Create::GL::isRunning' is uninitialized. Always initialize a member variable (type.6)."
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "file:///C:/Users/jumic/source/repos/OpenGLTest/OpenGLTest/Create1.cpp"
+                },
+                "region": {
+                  "startLine": 13,
+                  "startColumn": 5,
+                  "endLine": 13,
+                  "endColumn": 5
+                }
+              },
+              "logicalLocations": [
+                {
+                  "fullyQualifiedName": "Create::GL::{ctor}",
+                  "decoratedName": "??0GL@Create@@QEAA@XZ",
+                  "kind": "function"
+                }
+              ]
+            }
+          ],
+          "properties": {
+            "targetSymbol": "Create::GL::isRunning"
+          }
+        }
+      ],
+      "tool": {
+        "driver": {
+          "name": "PREfast",
+          "fullName": "PREfast Code Analysis",
+          "version": "14.33.31630.0",
+          "informationUri": "https://aka.ms/cpp/ca"
+        }
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "artifacts": [
+        {
+          "location": {
+            "uri": "file:///C:/Users/jumic/source/repos/OpenGLTest/OpenGLTest/Create1.h"
+          },
+          "roles": [
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "3d83b32e2353825e3f4a3d746a26fedb356fea6c68815981afb369bbeacab45c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///C:/Users/jumic/source/repos/OpenGLTest/OpenGLTest/Create1.cpp"
+          },
+          "roles": [
+            "analysisTarget",
+            "resultFile"
+          ],
+          "hashes": {
+            "sha-256": "befedd01949fe7059ac120fedb4ab5bb8cfe2a2e92a3822fca50aca39aa12ff6"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl image/include/sdl_image.h"
+          },
+          "hashes": {
+            "sha-256": "f1a6bade306e69da970ae9b9c2f2c7ca43d46d018938fca5e036d3dbf5af5867"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl.h"
+          },
+          "hashes": {
+            "sha-256": "53afe4b59f9081a4f6b2889bd219d399ff506345168937c62c6fa8dc92d9461d"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_main.h"
+          },
+          "hashes": {
+            "sha-256": "bee2d598c2da0f3f59333455325e1d865758644af78dbc6b51952d0fa937b55c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_stdinc.h"
+          },
+          "hashes": {
+            "sha-256": "01c504b8db61ba28e5d93ee91af1af761873c8f664c8e103fcd8416ce5db5d25"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_config.h"
+          },
+          "hashes": {
+            "sha-256": "5672180ef36214dab497566fb22ae05d77ae2353584e2f5d510e945bb29fa304"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_platform.h"
+          },
+          "hashes": {
+            "sha-256": "dae75cf01cbd710fa46c1f00c96776f2f776a2172db8a5ff51546ca8506bef1b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/begin_code.h"
+          },
+          "hashes": {
+            "sha-256": "98e31da4c61d547c9c88184135b72e3d014a7a69102e5c6d758350237cf6b271"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/close_code.h"
+          },
+          "hashes": {
+            "sha-256": "f49100335e21a43455ead0e742f7c816d0494171ce10948e3637b9abf3ca953a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_assert.h"
+          },
+          "hashes": {
+            "sha-256": "8625d9a9907679a667b046255117f4716cbf6f7b94d730a3510a5317bce45724"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_atomic.h"
+          },
+          "hashes": {
+            "sha-256": "d0e6546ddc4f01bb503f3aecf15ca25496975e00eeb42d00a8a5978aa26f92b5"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_audio.h"
+          },
+          "hashes": {
+            "sha-256": "0161cf27e252eaff2c7b4bd48ddf526db6a8eb5d0f1459295686a1cfdb32b01a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_error.h"
+          },
+          "hashes": {
+            "sha-256": "470f04a4562305966d7705b774c1e85fb6e9e8ce4c136f2669bd4cc2cc6c922f"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_endian.h"
+          },
+          "hashes": {
+            "sha-256": "7b9920f5e114e8d276c3c4394630c1598012c7f54262dd8f7efa188407e80189"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_mutex.h"
+          },
+          "hashes": {
+            "sha-256": "3a656b533b97a5527a89fcfbb709c37024f7ed293d942a6a3f9ce068273f42d0"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_thread.h"
+          },
+          "hashes": {
+            "sha-256": "8c8cfa7c106e1ede1f437d4a76aabf3b71424c2093ee49ea88ec9c8e15180257"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_rwops.h"
+          },
+          "hashes": {
+            "sha-256": "231d792f807225b204ac5950cd76350b8e7c45bd8a47e93e334dccc61446bbbd"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_clipboard.h"
+          },
+          "hashes": {
+            "sha-256": "f632d628d78712a4ab23d9159e1c2dc5e91b1fc784c1aeb859d27eadce3044e6"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_cpuinfo.h"
+          },
+          "hashes": {
+            "sha-256": "dd1b5f8742b4aadcae4aab381981ac485a79da47340d8bdf397902acd57c53e6"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_events.h"
+          },
+          "hashes": {
+            "sha-256": "1430c145ac839859bf4bbf836d4b02563bf99caaea730a3207bad6f1e2a13468"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_video.h"
+          },
+          "hashes": {
+            "sha-256": "3a6bda392e9a7de2e87e54a3962b57db3e5c7aa03118232fa5030c248c7056f7"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_pixels.h"
+          },
+          "hashes": {
+            "sha-256": "b1ea3870abcf21584a520e41cdca0e32d957b87c0afb8cdafac95dda80e1810c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_rect.h"
+          },
+          "hashes": {
+            "sha-256": "eb138b567b86c5fd92f378ecd40969758f863e2f3a70bff7a65ce7bb9a095703"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_surface.h"
+          },
+          "hashes": {
+            "sha-256": "e033f6a0fe7958154f4a08803da9c1084db67a472114ab070dd47d3747aeda27"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_blendmode.h"
+          },
+          "hashes": {
+            "sha-256": "64082c3f9c6a5d08ac143004dc3591586bd498fdf443416a2ad5e153d8fd3da8"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_keyboard.h"
+          },
+          "hashes": {
+            "sha-256": "319e9af1bb169056664f53a3a6dcd6f83cd8c5c145484dd8c07b53023b488d11"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_keycode.h"
+          },
+          "hashes": {
+            "sha-256": "fe1bf8054eb8764f1c1855d21c41539ded85968fd28be9128811c431dce89199"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_scancode.h"
+          },
+          "hashes": {
+            "sha-256": "4e8503dd30789c11c1460c68bdd91339cc14b14ed5b3f969db843fbd7daced40"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_mouse.h"
+          },
+          "hashes": {
+            "sha-256": "8d48c639be35c3c9a70814e663f80a98db897ffbabf2c4561e6f8d72af878e55"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_joystick.h"
+          },
+          "hashes": {
+            "sha-256": "9ed1a7ccf400d82763e060057bd21623660d512d59c8a41fcad0ea4c48e7f42b"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_guid.h"
+          },
+          "hashes": {
+            "sha-256": "00d0e3df560ef8cc8b67aa6c2727fb67f2b57a91e5923526d943974866351b6c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_gamecontroller.h"
+          },
+          "hashes": {
+            "sha-256": "1d51c5ca4ca48dd8c5f8c4f43e9a93770ec4afd6e34b60b328ea59143b4bc8ae"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_sensor.h"
+          },
+          "hashes": {
+            "sha-256": "5e66263151bad5fce025f8fbee6191393cb0b8c5ac36044b1b9f7b6e1cfea5e6"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_quit.h"
+          },
+          "hashes": {
+            "sha-256": "a2fd94238708d48b3262af2a93bfff470ae663939b021a7b2a4453d1ca7c5d53"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_gesture.h"
+          },
+          "hashes": {
+            "sha-256": "9fc58622bc0194b0d6766ea56fe32db47c0b199f35b007e370d1d0a88012acf8"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_touch.h"
+          },
+          "hashes": {
+            "sha-256": "e132fa6288a6f73589a38c5729977f319b2b508acd52f95916912ea0cb4e2255"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_filesystem.h"
+          },
+          "hashes": {
+            "sha-256": "65594245e4cea7744a461b27b9165660629545d21ca457e7b5870f595c2e2b2a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_haptic.h"
+          },
+          "hashes": {
+            "sha-256": "ae535dfd03e7d2d52435965de6eb5cd200157fd721200ecc3a401b0cec0f65ad"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_hidapi.h"
+          },
+          "hashes": {
+            "sha-256": "f13f679c630c3910d63982d3ff44a9ab0b17892da2a93cfc2a1bf93d65a7b1c4"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_hints.h"
+          },
+          "hashes": {
+            "sha-256": "2e671fa1b158186cef8e475509dd0f7003ec35a2ced4f90a636075bfc46db4a4"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_loadso.h"
+          },
+          "hashes": {
+            "sha-256": "8e4d0357ad6c8069cd7de68201736065500a8c7b2384e7fd65d4ee4d160091cb"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_log.h"
+          },
+          "hashes": {
+            "sha-256": "1e3f574e4e5f06b4ac3bb7670e50d16a81c2493930f48f2e7084fa512aadefff"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_messagebox.h"
+          },
+          "hashes": {
+            "sha-256": "9f8e01efd07295e6d0f4ef3350bd217ada6996591c2022b7f9163fbfdfe67eef"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_metal.h"
+          },
+          "hashes": {
+            "sha-256": "8c80acbb8c88af9b544c0d79c77073600db9c4aff7c08ccc6af541cccd91cc8c"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_power.h"
+          },
+          "hashes": {
+            "sha-256": "93ae2fad778ff057a582f4940cc83864b4991aeaeaeb5c94f3bc30ebfe6633ef"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_render.h"
+          },
+          "hashes": {
+            "sha-256": "10c7098c5bcd56b06ccb63aed7583ef396a5f5c5ec6391315267e0c0e84f0240"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_shape.h"
+          },
+          "hashes": {
+            "sha-256": "1d35455675397d3dcd27bef13c62ec4c4c40b2211c27d589af23bfccb6492fa7"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_system.h"
+          },
+          "hashes": {
+            "sha-256": "42ac41a62f1a9c385cf5779e64a1b2a6d20c207957ef142c17f6ed5b611e2ab8"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_timer.h"
+          },
+          "hashes": {
+            "sha-256": "190af3b762fd203ce25c17eda9fb31d698bd75957f59d4ce7cc21671e8a2403a"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_version.h"
+          },
+          "hashes": {
+            "sha-256": "c9e25f6e29e945d78d109021d1a4ec7eb0d664283097069743c4c89e0affd5c6"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_locale.h"
+          },
+          "hashes": {
+            "sha-256": "9919ace207fad203b24ac916c92b529f74088ed14c797760a32e05b76c6058ec"
+          }
+        },
+        {
+          "location": {
+            "uri": "file:///c:/path/sdl/include/sdl_misc.h"
+          },
+          "hashes": {
+            "sha-256": "ee696c2a1135d0110ce6c9efe0d67f9a9e8ec400f6f00c2b53247995193f96ec"
+          }
+        }
+      ]
+    }
+  ]
+}
