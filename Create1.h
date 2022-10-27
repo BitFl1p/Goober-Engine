@@ -9,68 +9,52 @@
 #include <map>
 using namespace std;
 namespace Create {
-    struct Vector3 {
+    class Sprite;
+    struct Vector2 {
     public:
-        float x, y, z;
-        Vector3() {
+        float x, y;
+        Vector2() {
             x = 0;
             y = 0;
-            z = 0;
         }
-        Vector3(float x, float y, float z) {
+        Vector2(float x, float y) {
             this->x = x;
             this->y = y;
-            this->z = z;
         }
-        Vector3 Clamp(Vector3 coord, float min, float max) {
+        static Vector2 Lerp(Vector2 from, Vector2 to, float t);
+        Vector2& operator+=(const Vector2& other);
+        Vector2 operator+(Vector2 other);
+        Vector2& operator-=(const Vector2& other);
+        Vector2 operator-(Vector2 other);
+        Vector2& operator+=(const float& other);
+        Vector2 operator+(float other); 
+        Vector2& operator-=(const float& other);
+        Vector2 operator-(float other);
+        Vector2& operator*=(const float& other);
+        Vector2 operator*(float other); 
+        Vector2& operator/=(const float& other);
+        Vector2 operator/(float other);
 
-            coord.x = coord.x > max ? max : coord.x < min ? min : coord.x;
-            coord.y = coord.y > max ? max : coord.y < min ? min : coord.y;
-            coord.z = coord.z > max ? max : coord.z < min ? min : coord.z;
-            return coord;
-        }
-        Vector3& operator+=(const Vector3& other);
-        Vector3 operator+(Vector3 other);
-        Vector3& operator-=(const Vector3& other);
-        Vector3 operator-(Vector3 other);
-        Vector3& operator+=(const float& other);
-        Vector3 operator+(float other); 
-        Vector3& operator-=(const float& other);
-        Vector3 operator-(float other);
-        Vector3& operator*=(const float& other);
-        Vector3 operator*(float other); 
-        Vector3& operator/=(const float& other);
-        Vector3 operator/(float other);
-
-    };
-    struct Line {
-    public:
-        Vector3 start, end;
-        Line() {
-            start = Vector3();
-            end = Vector3();
-        }
-        Line(Vector3 start, Vector3 end) {
-            this->start = start;
-            this->end = end;
-        }
     }; 
     class GameObject;
     class Component {
     public:
         GameObject* parent = 0;
+        Component() {}
         virtual void Update() = 0; virtual void Start() = 0;
     };
     class Transform : virtual public Component
     {
     public:
-        Vector3 position, eulerAngles, scale;
+        Vector2 position, scale;
+        float angle;
         Transform()
         {
-            position = Vector3();
-            eulerAngles = Vector3();
-            scale = Vector3(1, 1, 1);
+            position = Vector2();
+            angle = 0;
+            scale = Vector2(1, 1);
         }
+        Vector2 TruePos();
         void Update() {} void Start() {}
     };
     class GameObject
@@ -81,86 +65,127 @@ namespace Create {
         vector<Component*> components = vector<Component*>{};
         void Update();
         void Start();
-        GameObject(Transform transform, vector<Component*> components) {
-            this->transform = transform;
-            this->components = components;
+        GameObject(Transform transform, vector<Component*> components);
+        template <typename T> T* GetComponent() {
+            for (auto comp : components) {
+                if (dynamic_cast<T*>(comp)) return dynamic_cast<T*>(comp);
+            }
+            return NULL;
         }
-        GameObject(vector<Component*> components) {
-            this->transform = Transform();
-            this->components = components;
-        }
+        GameObject(vector<Component*> components);
+
         GameObject() {}
+
        
-        template <class T> bool GetComponent(T& component);
     };
-    static Transform camera;
-   
-    class GL
-	{
+    static class Input {
     public:
+        static bool GetKey(int key);
+    };
+    class GL
+	{    
+    private:
+        bool isRunning;
         GL();
+        static GL* game;
+    public:
+        static GL* Game();
+        bool debug = false;
+        vector<GameObject*> gameObjects;
         ~GL();
-
         void init(const char* title);
-
-        static vector<GameObject> gameObjects;
-        static GameObject MakeObject(GameObject* obj);
+        void MakeObject(GameObject* obj);
         void handleEvents();
         void start();
         void update();
         void render();
         void clean();
-
         bool running() { return isRunning; }
-        static map<SDL_Texture*, SDL_Rect*> renderTextures;
-        static double* deltaTime;
+        vector<Sprite*> renderTextures;
+        double deltaTime;
         
-        static SDL_Renderer* renderer;
+        SDL_Renderer* renderer;
         
-        static SDL_Window* window;
-    private:
-        
-        bool isRunning;
-        
+        SDL_Window* window;
+        Vector2 GetScreenSize();
+
+        Transform* camera;
+    
     };
-    static double DeltaTime() {
-        return *GL::deltaTime;
+    static Transform* Camera() {
+        if (GL::Game()->camera == nullptr)
+            GL::Game()->camera = new Transform();
+        return GL::Game()->camera;
     }
+
+    static double DeltaTime() {
+        return GL::Game()->deltaTime;
+    }
+    /*class Rect {
+    public:
+        double x1, x2, y1, y2;
+        Rect(double x1, double x2, double y1, double y2) {
+            this->x1 = x1;
+            this->x2 = x2;
+            this->y1 = y1;
+            this->y2 = y2;
+        }
+        static bool IsOverlapped(Rect* first, Rect* second) {
+            if(first->x1 < second->x1 && first->x2 < second->x1 || first->x1 < second->x2 && first->x2 < second->x2)
+            if(first->y1 < second->y1 && first->y2 < second->y1 || first->y1 < second->y2 && first->y2 < second->y2)
+        }
+    };*/
     class Sprite : virtual public Component
     {
     public:
+        bool flipX = false, flipY = false;
         SDL_Texture* texture;
         SDL_Rect* rect = new SDL_Rect();
         const char* sprite;
-        Sprite(const char* sprite) {
-            this->sprite = sprite;
+        void SetImage(const char* spr);
+        Sprite(const char* sprite) { this->sprite = sprite; }
+        Sprite() {}
+        void Update();
+        void Start();
+    };
+    class Collider : virtual public Component {
+    public:
+        SDL_Rect* rect = new SDL_Rect();
+        double w, h;
+        bool locked = true;
+        Collider(double w, double h) {
+            this->w = w;
+            this->h = h;
+        }
+        Collider(double w, double h, bool lock) {
+            this->w = w;
+            this->h = h;
+            locked = lock;
         }
         
-
         void Update() {
-            int w, h, ww, wh;
-            SDL_QueryTexture(texture, NULL, NULL, &w, &h); 
-            SDL_GetWindowSize(GL::window, &ww, &wh);
-            rect->x = parent->transform.position.x - camera.position.x;
-            rect->y = parent->transform.position.y - camera.position.y;
+            rect->x = parent->transform.TruePos().x - (rect->w * .5);
+            rect->y = parent->transform.TruePos().y - (rect->h * .5);
             rect->w = w * parent->transform.scale.x;
             rect->h = h * parent->transform.scale.y;
-            GL::renderTextures[texture] = rect;
+            for (auto gameObject : GL::Game()->gameObjects) {
+                Collider* collider = gameObject->GetComponent<Collider>();
+                SDL_Rect* intersect = new SDL_Rect();
+                if (collider) if (this != collider && SDL_IntersectRect(this->rect, collider->rect, intersect)) {
+                    if (!locked) {
+                        
+                        if (intersect->w > intersect->h)
+                            parent->transform.position.x -= (collider->parent->transform.position.x - parent->transform.position.x) / 32; 
+                        else if (intersect->h > intersect->w)
+                            parent->transform.position.y -= (collider->parent->transform.position.y - parent->transform.position.y) / 32;
+                    }
+                }
+            }
         }
-        void Start() {
-            SDL_Surface* surface = IMG_Load(sprite);
-            cout << IMG_GetError() << endl;
-            texture = SDL_CreateTextureFromSurface(GL::renderer, surface);
-            SDL_FreeSurface(surface);
-            int w, h, ww, wh;
-            SDL_QueryTexture(texture, NULL, NULL, &w, &h);
-            SDL_GetWindowSize(GL::window, &ww, &wh);
-            rect->x = parent->transform.position.x - camera.position.x;
-            rect->y = parent->transform.position.y - camera.position.y;
-            rect->w = w * parent->transform.scale.x;
-            rect->h = h * parent->transform.scale.y;
-            GL::renderTextures.emplace(texture, rect);
-        }
+        void Start() {}
+    };
+    class BoxCollider : public Collider {
+
     };
 }
 

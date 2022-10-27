@@ -1,27 +1,40 @@
 #include "Create1.h"
-#include "Windows.h"
 #include <iostream>
-#include <vector>
+#include <math.h>  
 using namespace std;
 using namespace Create;
 
+
 class PlayerInput : virtual public Component {
 public:
-	int count = 0;
-	bool goDown = false;
-	void Start() { cout << "Start" << endl; }
+	float count = 0;
+	float speed = 2.5;
+	Sprite* sprite;
+	void Start() 
+	{ 
+		sprite = parent->GetComponent<Sprite>();
+		GL::Game()->debug = true;
+		parent->transform.position = Vector2(10, 10);
+	}
 	void Update() {
-		parent->transform.scale = Vector3(3,3,3);
-		camera.position = parent->transform.position;
-		if(GetKeyState(VK_UP) & 0x8000) parent->transform.position.y -= 5 * DeltaTime();
-		if(GetKeyState(VK_DOWN) & 0x8000) parent->transform.position.y += 5 * DeltaTime();
-		if(GetKeyState(VK_LEFT) & 0x8000) parent->transform.position.x -= 5 * DeltaTime();
-		if(GetKeyState(VK_RIGHT) & 0x8000) parent->transform.position.x += 5 * DeltaTime();
+		
+		Camera()->position = Vector2::Lerp(Camera()->position, parent->transform.position, .5);
+
+		parent->transform.scale = Vector2(3, 3);
+		count += DeltaTime()/10;
+		//parent->transform.scale += sin(count);
+		//parent->transform.angle += 5 * DeltaTime();
+		if (Input::GetKey(VK_UP)) parent->transform.position.y += speed * DeltaTime();
+		if (Input::GetKey(VK_DOWN)) parent->transform.position.y -= speed * DeltaTime();
+		if (Input::GetKey(VK_LEFT)) parent->transform.position.x -= speed * DeltaTime();
+		if (Input::GetKey(VK_RIGHT)) parent->transform.position.x += speed * DeltaTime();
 	}
 };
 
-GameObject player = GL::MakeObject(new GameObject({
+GameObject player = GameObject(
+{
 	new PlayerInput(),
-	new Sprite("buh.png")
-	}));
+	new Sprite("buh.png"),
+	new Collider(16, 16, false)
+});
 
