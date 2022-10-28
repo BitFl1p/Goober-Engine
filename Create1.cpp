@@ -186,6 +186,37 @@ Vector2 Vector2::Lerp(Vector2 from, Vector2 to, float t) {
     target *= t / 10 * DeltaTime();
     return from + target;
 }
+Collider::Collider(double w, double h) {
+    this->w = w;
+    this->h = h;
+}
+Collider::Collider(double w, double h, bool lock) {
+    this->w = w;
+    this->h = h;
+    locked = lock;
+}
+
+void Collider::Update() {
+    rect->x = parent->transform.TruePos().x - (rect->w * .5);
+    rect->y = parent->transform.TruePos().y - (rect->h * .5);
+    rect->w = w * parent->transform.scale.x;
+    rect->h = h * parent->transform.scale.y;
+    for (auto gameObject : GL::Game()->gameObjects) {
+        Collider* collider = gameObject->GetComponent<Collider>();
+        SDL_Rect* intersect = new SDL_Rect();
+        if (collider) if (this != collider && SDL_IntersectRect(this->rect, collider->rect, intersect)) {
+            if (!locked) {
+
+                if (intersect->w > intersect->h)
+                    if (intersect->y > collider->rect->y) parent->transform.position.y -= intersect->h;
+                    else parent->transform.position.y += intersect->h;
+                else if (intersect->h > intersect->w)
+                    if (intersect->x > collider->rect->x) parent->transform.position.x += intersect->w;
+                    else parent->transform.position.x -= intersect->w;
+            }
+        }
+    }
+}
 bool Input::GetKey(int key) {
     return GetKeyState(key) & 0x8000;
 }

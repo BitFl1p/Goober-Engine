@@ -153,41 +153,11 @@ namespace Create {
         SDL_Rect* rect = new SDL_Rect();
         double w, h;
         bool locked = true;
-        Collider(double w, double h) {
-            this->w = w;
-            this->h = h;
-        }
-        Collider(double w, double h, bool lock) {
-            this->w = w;
-            this->h = h;
-            locked = lock;
-        }
+        Collider(double w, double h);
+        Collider(double w, double h, bool lock);
         
-        void Update() {
-            rect->x = parent->transform.TruePos().x - (rect->w * .5);
-            rect->y = parent->transform.TruePos().y - (rect->h * .5);
-            rect->w = w * parent->transform.scale.x;
-            rect->h = h * parent->transform.scale.y;
-            for (auto gameObject : GL::Game()->gameObjects) {
-                Collider* collider = gameObject->GetComponent<Collider>();
-                SDL_Rect* intersect = new SDL_Rect();
-                if (collider) if (this != collider && SDL_IntersectRect(this->rect, collider->rect, intersect)) {
-                    if (!locked) {
-                        
-                        if (intersect->w > intersect->h) 
-                            if (intersect->y > collider->rect->y) parent->transform.position.y -= intersect->h; 
-                            else parent->transform.position.y += intersect->h;
-                        else if (intersect->h > intersect->w) 
-                            if(intersect->x > collider->rect->x) parent->transform.position.x += intersect->w;
-                            else parent->transform.position.x -= intersect->w;
-                    }
-                }
-            }
-        }
+        void Update();
         void Start() {}
-    };
-    class BoxCollider : public Collider {
-
     };
 }
 

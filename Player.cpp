@@ -14,7 +14,6 @@ public:
 	{ 
 		sprite = parent->GetComponent<Sprite>();
 		GL::Game()->debug = true;
-		parent->transform.position = Vector2(10, 10);
 	}
 	void Update() {
 		
