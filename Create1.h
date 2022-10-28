@@ -174,10 +174,12 @@ namespace Create {
                 if (collider) if (this != collider && SDL_IntersectRect(this->rect, collider->rect, intersect)) {
                     if (!locked) {
                         
-                        if (intersect->w > intersect->h)
-                            parent->transform.position.x -= (collider->parent->transform.position.x - parent->transform.position.x) / 32; 
-                        else if (intersect->h > intersect->w)
-                            parent->transform.position.y -= (collider->parent->transform.position.y - parent->transform.position.y) / 32;
+                        if (intersect->w > intersect->h) 
+                            if (intersect->y > collider->rect->y) parent->transform.position.y -= intersect->h; 
+                            else parent->transform.position.y += intersect->h;
+                        else if (intersect->h > intersect->w) 
+                            if(intersect->x > collider->rect->x) parent->transform.position.x += intersect->w;
+                            else parent->transform.position.x -= intersect->w;
                     }
                 }
             }
