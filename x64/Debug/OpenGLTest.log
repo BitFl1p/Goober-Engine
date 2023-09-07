@@ -1,8 +1,0 @@
-﻿  Player.cpp
-C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Create1.h(84,6): warning C4091: 'static ': ignored on left of 'Create::Input' when no variable is declared
-C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Player.cpp(23,23): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Player.cpp(26,67): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Player.cpp(27,69): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Player.cpp(28,69): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-C:\Users\jumic\source\repos\OpenGLTest\OpenGLTest\Player.cpp(29,70): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-  OpenGLTest.vcxproj -> C:\Users\jumic\source\repos\OpenGLTest\x64\Debug\Create1.exe
