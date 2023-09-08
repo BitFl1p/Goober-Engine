@@ -8,9 +8,7 @@ I'll add a proper tutorial later, it's 1am right now I need sleep... 😓
 
 ## Badges
 
-Add badges from somewhere like: [shields.io](https://shields.io/)
-
-[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/) ![](https://img.shields.io/badge/status-probably_broken-purple)
+[![MIT License](https://img.shields.io/badge/License-MIT-green.svg)](https://choosealicense.com/licenses/mit/) [![](https://img.shields.io/badge/status-probably_broken-purple)](https://www.ismycomputeronfire.com)
 
 
 ## Acknowledgements
