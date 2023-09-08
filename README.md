@@ -15,6 +15,6 @@ Add badges from somewhere like: [shields.io](https://shields.io/)
 
 ## Acknowledgements
 
- - [SDL Template](https://github.com/Pharap/SDL2-Project-Template) by @Pharap
+ - [SDL Template](https://github.com/Pharap/SDL2-Project-Template) by [@Pharap](https://github.com/Pharap/SDL2-Project-Template)
  - [README.MD Writer](https://readme.so)
- - [Physics Tutorial](https://github.com/erincatto/box2d-lite/blob/master/docs/GDC2006_Catto_Erin_PhysicsTutorial.pdf) by @erincatto
+ - [Physics Tutorial](https://github.com/erincatto/box2d-lite/blob/master/docs/GDC2006_Catto_Erin_PhysicsTutorial.pdf) by [@erincatto](https://github.com/erincatto)
