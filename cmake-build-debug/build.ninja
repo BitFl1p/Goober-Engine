@@ -49,17 +49,17 @@ cmake_ninja_workdir = /home/bit/Dev/GooberEngine/cmake-build-debug/
 
 build cmake_object_order_depends_target_GooberEngine: phony || CMakeFiles/GooberEngine.dir
 
-build CMakeFiles/GooberEngine.dir/Engine/main.cpp.o.ddi: CXX_SCAN__GooberEngine_Debug /home/bit/Dev/GooberEngine/Engine/main.cpp || cmake_object_order_depends_target_GooberEngine
-  DEP_FILE = CMakeFiles/GooberEngine.dir/Engine/main.cpp.o.ddi.d
-  DYNDEP_INTERMEDIATE_FILE = CMakeFiles/GooberEngine.dir/Engine/main.cpp.o.ddi
+build CMakeFiles/GooberEngine.dir/Engine/Main.cpp.o.ddi: CXX_SCAN__GooberEngine_Debug /home/bit/Dev/GooberEngine/Engine/Main.cpp || cmake_object_order_depends_target_GooberEngine
+  DEP_FILE = CMakeFiles/GooberEngine.dir/Engine/Main.cpp.o.ddi.d
+  DYNDEP_INTERMEDIATE_FILE = CMakeFiles/GooberEngine.dir/Engine/Main.cpp.o.ddi
   FLAGS = -g -std=gnu++23 -fdiagnostics-color=always
   INCLUDES = -isystem /usr/include/SDL2
-  OBJ_FILE = CMakeFiles/GooberEngine.dir/Engine/main.cpp.o
-  PREPROCESSED_OUTPUT_FILE = CMakeFiles/GooberEngine.dir/Engine/main.cpp.o.ddi.i
+  OBJ_FILE = CMakeFiles/GooberEngine.dir/Engine/Main.cpp.o
+  PREPROCESSED_OUTPUT_FILE = CMakeFiles/GooberEngine.dir/Engine/Main.cpp.o.ddi.i
 
-build CMakeFiles/GooberEngine.dir/Engine/main.cpp.o: CXX_COMPILER__GooberEngine_scanned_Debug /home/bit/Dev/GooberEngine/Engine/main.cpp || cmake_object_order_depends_target_GooberEngine CMakeFiles/GooberEngine.dir/CXX.dd CMakeFiles/GooberEngine.dir/Engine/main.cpp.o.modmap
-  DEP_FILE = CMakeFiles/GooberEngine.dir/Engine/main.cpp.o.d
-  DYNDEP_MODULE_MAP_FILE = CMakeFiles/GooberEngine.dir/Engine/main.cpp.o.modmap
+build CMakeFiles/GooberEngine.dir/Engine/Main.cpp.o: CXX_COMPILER__GooberEngine_scanned_Debug /home/bit/Dev/GooberEngine/Engine/Main.cpp || cmake_object_order_depends_target_GooberEngine CMakeFiles/GooberEngine.dir/CXX.dd CMakeFiles/GooberEngine.dir/Engine/Main.cpp.o.modmap
+  DEP_FILE = CMakeFiles/GooberEngine.dir/Engine/Main.cpp.o.d
+  DYNDEP_MODULE_MAP_FILE = CMakeFiles/GooberEngine.dir/Engine/Main.cpp.o.modmap
   FLAGS = -g -std=gnu++23 -fdiagnostics-color=always
   INCLUDES = -isystem /usr/include/SDL2
   OBJECT_DIR = CMakeFiles/GooberEngine.dir
@@ -100,7 +100,7 @@ build CMakeFiles/GooberEngine.dir/Scripts/Player.cpp.o: CXX_COMPILER__GooberEngi
   OBJECT_FILE_DIR = CMakeFiles/GooberEngine.dir/Scripts
   dyndep = CMakeFiles/GooberEngine.dir/CXX.dd
 
-build CMakeFiles/GooberEngine.dir/CXX.dd | /home/bit/Dev/GooberEngine/cmake-build-debug/CMakeFiles/GooberEngine.dir/CXXModules.json CMakeFiles/GooberEngine.dir/Engine/main.cpp.o.modmap CMakeFiles/GooberEngine.dir/Engine/Goober.cpp.o.modmap CMakeFiles/GooberEngine.dir/Scripts/Player.cpp.o.modmap: CXX_DYNDEP__GooberEngine_Debug CMakeFiles/GooberEngine.dir/Engine/main.cpp.o.ddi CMakeFiles/GooberEngine.dir/Engine/Goober.cpp.o.ddi CMakeFiles/GooberEngine.dir/Scripts/Player.cpp.o.ddi
+build CMakeFiles/GooberEngine.dir/CXX.dd | /home/bit/Dev/GooberEngine/cmake-build-debug/CMakeFiles/GooberEngine.dir/CXXModules.json CMakeFiles/GooberEngine.dir/Engine/Main.cpp.o.modmap CMakeFiles/GooberEngine.dir/Engine/Goober.cpp.o.modmap CMakeFiles/GooberEngine.dir/Scripts/Player.cpp.o.modmap: CXX_DYNDEP__GooberEngine_Debug CMakeFiles/GooberEngine.dir/Engine/Main.cpp.o.ddi CMakeFiles/GooberEngine.dir/Engine/Goober.cpp.o.ddi CMakeFiles/GooberEngine.dir/Scripts/Player.cpp.o.ddi
 
 
 # =============================================================================
@@ -110,7 +110,7 @@ build CMakeFiles/GooberEngine.dir/CXX.dd | /home/bit/Dev/GooberEngine/cmake-buil
 #############################################
 # Link the executable GooberEngine
 
-build GooberEngine: CXX_EXECUTABLE_LINKER__GooberEngine_Debug CMakeFiles/GooberEngine.dir/Engine/main.cpp.o CMakeFiles/GooberEngine.dir/Engine/Goober.cpp.o CMakeFiles/GooberEngine.dir/Scripts/Player.cpp.o | /usr/lib/libSDL2main.a /usr/lib/libSDL2-2.0.so.0.3000.3
+build GooberEngine: CXX_EXECUTABLE_LINKER__GooberEngine_Debug CMakeFiles/GooberEngine.dir/Engine/Main.cpp.o CMakeFiles/GooberEngine.dir/Engine/Goober.cpp.o CMakeFiles/GooberEngine.dir/Scripts/Player.cpp.o | /usr/lib/libSDL2main.a /usr/lib/libSDL2-2.0.so.0.3000.3
   FLAGS = -g
   LINK_LIBRARIES = /usr/lib/libSDL2main.a  /usr/lib/libSDL2-2.0.so.0.3000.3  -lSDL2_image
   OBJECT_DIR = CMakeFiles/GooberEngine.dir

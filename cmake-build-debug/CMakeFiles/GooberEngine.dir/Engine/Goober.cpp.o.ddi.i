@@ -142397,19 +142397,14 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 # 10 "/home/bit/Dev/GooberEngine/Engine/Goober.h"
 using namespace std;
-namespace Goober {
+namespace goober {
     class Sprite;
     struct Vector2 {
     public:
         double x, y;
-        Vector2() {
-            x = 0;
-            y = 0;
-        }
-        Vector2(double x, double y) {
-            this->x = x;
-            this->y = y;
-        }
+        Vector2() : x(0), y(0) {}
+        Vector2(double x, double y) : x(x), y(y) {}
+
         static Vector2 Lerp(Vector2 from, Vector2 to, double t);
         Vector2& operator+=(const Vector2& other);
         Vector2 operator+(Vector2 other);
@@ -142459,9 +142454,9 @@ namespace Goober {
                 if (dynamic_cast<T*>(comp)) return dynamic_cast<T*>(comp);
             }
             return 
-# 72 "/home/bit/Dev/GooberEngine/Engine/Goober.h" 3 4
+# 67 "/home/bit/Dev/GooberEngine/Engine/Goober.h" 3 4
                   __null
-# 72 "/home/bit/Dev/GooberEngine/Engine/Goober.h"
+# 67 "/home/bit/Dev/GooberEngine/Engine/Goober.h"
                       ;
         }
         explicit GameObject(vector<Component*> components);
@@ -142470,12 +142465,25 @@ namespace Goober {
 
 
     };
+
     class Input {
     public:
-
+     enum Key {
+      A = 'a', B = 'b', C = 'c', D = 'd', E = 'e', F = 'f',
+      G = 'g', H = 'h', I = 'i', J = 'j', K = 'k', L = 'l',
+      M = 'm', N = 'n', O = 'o', P = 'p', Q = 'q', R = 'r',
+      S = 's', T = 't', U = 'u', V = 'v', W = 'w', X = 'x', Y = 'y', Z = 'z',
+      ONE = 1, TWO = 2, THREE = 3, FOUR = 4, FIVE = 5, SIX = 6, SEVEN = 7, EIGHT = 8, NINE = 9, ZERO = 0,
+      NUM_ONE, NUM_TWO, NUM_THREE, NUM_FOUR, NUM_FIVE, NUM_SIX, NUM_SEVEN, NUM_EIGHT, NUM_NINE, NUM_ZERO,
+      SPACE, L_ALT, R_ALT, L_CTRL, R_CTRL, L_SHIFT, R_SHIFT, TAB, CAPS_LOCK, ESC,
+     };
+ private:
+     static map<Key, bool>* keys;
+ public:
+     [[maybe_unused]] static bool GetKey(Key key);
     };
-    class GL
-    {
+
+    class GL {
     private:
         bool isRunning{};
         GL();
@@ -142485,15 +142493,16 @@ namespace Goober {
         bool debug = false;
         vector<GameObject*> gameObjects;
         ~GL();
-        void init(const char* title);
+        void Init(const char* title, int x, int y);
         static void MakeObject(GameObject* obj);
-        void handleEvents();
-        static void start();
-        static void update();
-        void render();
-        void clean() const;
+        void HandleEvents();
+        static void Start();
+        static void Update();
+        void Render();
+        void Clean() const;
         [[nodiscard]] bool running() const { return isRunning; }
-        void SetWindowTitle(const char* title) const;
+
+     [[maybe_unused]] void SetWindowTitle(const char* title) const;
         void SetWindowPos(Vector2 pos) const;
         vector<Sprite*> renderTextures;
         double deltaTime{};
@@ -142504,8 +142513,8 @@ namespace Goober {
         Vector2 GetScreenSize() const;
 
         Transform* camera{};
-
     };
+
     static Transform* Camera() {
         if (GL::Game()->camera == nullptr)
             GL::Game()->camera = new Transform();
@@ -142515,7 +142524,7 @@ namespace Goober {
     static double DeltaTime() {
         return GL::Game()->deltaTime;
     }
-# 139 "/home/bit/Dev/GooberEngine/Engine/Goober.h"
+
     class Sprite : virtual public Component
     {
     public:
@@ -142523,7 +142532,8 @@ namespace Goober {
         SDL_Texture* texture = nullptr;
         SDL_Rect* rect = new SDL_Rect();
         const char* sprite{};
-        void SetImage(const char* spr);
+
+     [[maybe_unused]] void SetImage(const char* spr);
         explicit Sprite(const char* sprite) : sprite(sprite) {}
         Sprite() = default;
         void Update() override;
@@ -142543,64 +142553,77 @@ namespace Goober {
 }
 # 6 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 2
 using namespace std;
-using namespace Goober;
+using namespace goober;
 
 GL* GL::game = nullptr;
+map<Input::Key, bool>* Input::keys = new map<Input::Key, bool>{};
 GL::GL() = default;
 GL::~GL() = default;
-void GL::init(const char* title)
+void GL::Init(const char* title, int x, int y)
 {
     if (SDL_Init(
-# 14 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
+# 15 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
                 ( 0x00000001u | 0x00000010u | 0x00000020u | 0x00004000u | 0x00000200u | 0x00001000u | 0x00002000u | 0x00008000u )
-# 14 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
+# 15 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
                                    ) == 0)
     {
         IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
-        cout << "Subsystems Initialised!..." << endl;
+        cout << "Subsystems Initialised..." << endl;
 
         window = SDL_CreateWindow(title, 
-# 19 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
+# 20 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
                                         (0x2FFF0000u|(0))
-# 19 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
-                                                              , 
-# 19 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
-                                                                (0x2FFF0000u|(0))
-# 19 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
-                                                                                      , 600, 400, SDL_WINDOW_SHOWN);
-        if (window) cout << "Window Created!..." << endl;
+# 20 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
+                                                              ,
+# 20 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
+                                                               (0x2FFF0000u|(0))
+# 20 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
+                                                                                     ,
+          x, y, SDL_WINDOW_SHOWN);
+        if (window) cout << "Window Created..." << endl;
 
         renderer = SDL_CreateRenderer(window, -1, 0);
         if (renderer) {
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             SDL_RenderClear(renderer);
             SDL_RenderPresent(renderer);
-            cout << "Renderer Created!..." << endl;
+            cout << "Renderer Created..." << endl;
         }
 
         isRunning = true;
     }
     else isRunning = false;
 }
-void GL::SetWindowTitle(const char* title) const {
+
+[[maybe_unused]] void GL::SetWindowTitle(const char* title) const {
     SDL_SetWindowTitle(window, title);
 }
 
-void GL::SetWindowPos(Vector2 pos) const {
+[[maybe_unused]] void GL::SetWindowPos(Vector2 pos) const {
     SDL_SetWindowPosition(window, (int)pos.x, (int)-pos.y);
 }
-void GL::handleEvents()
+void GL::HandleEvents()
 {
     SDL_Event event;
-    SDL_PollEvent(&event);
-    switch (event.type) {
-    case SDL_QUIT:
-    {
-        isRunning = false;
-        break;
-    }
-    default: break;
-    }
+    while(SDL_PollEvent(&event)) {
+     switch (event.type) {
+     case SDL_QUIT:
+   isRunning = false;
+         break;
+
+     case SDL_KEYDOWN:
+      cout << "Key Down: " << char(event.key.keysym.sym) << "\n";
+   break;
+
+  case SDL_KEYUP:
+      cout << "Key Up: " << char(event.key.keysym.sym) << "\n";
+   break;
+
+  default:
+   break;
+
+     }
+ }
 }
 GL* GL::Game() {
     if (game == nullptr)
@@ -142616,11 +142639,11 @@ GameObject::GameObject(Transform transform, vector<Component*> components) {
 GameObject::GameObject(vector<Component*> components) {
     this->transform = Transform();
     this->components = std::move(components);
-    GL::Game()->MakeObject(this);
+ GL::Game()->MakeObject(this);
 }
 
 void GameObject::Update() {
-    for (auto comp : this->components) {
+    for (Component* comp : this->components) {
         comp->Update();
         if (strcmp(SDL_GetError(), "") != 0)
         {
@@ -142630,7 +142653,7 @@ void GameObject::Update() {
     }
 }
 void GameObject::Start() {
-    for (auto comp : this->components) {
+    for (Component* comp : this->components) {
         comp->Start();
         if (strcmp(SDL_GetError(), "") != 0)
         {
@@ -142639,21 +142662,20 @@ void GameObject::Start() {
         }
     }
 }
-void GL::start() {
+void GL::Start() {
     for (auto obj : GL::Game()->gameObjects) obj->Start();
 }
 void GL::MakeObject(GameObject* obj) {
     GL::Game()->gameObjects.push_back(obj);
     for (auto comp : obj->components) comp->parent = obj;
 }
-void GL::update()
+void GL::Update()
 {
     for (GameObject* obj : GL::Game()->gameObjects) {
         obj->Update();
     }
-
 }
-void GL::render() {
+void GL::Render() {
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
     for (auto tex : renderTextures) {
@@ -142663,9 +142685,9 @@ void GL::render() {
         SDL_RendererFlip flipArgs = SDL_FLIP_NONE;
         if (tex->flipX || tex->flipY) {
             flipArgs = (SDL_RendererFlip)
-# 114 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
+# 126 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
                                         __null
-# 114 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
+# 126 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
                                             ;
             if (tex->flipX) flipArgs = (SDL_RendererFlip)(flipArgs | SDL_FLIP_HORIZONTAL);
             if (tex->flipY) flipArgs = (SDL_RendererFlip)(flipArgs | SDL_FLIP_VERTICAL);
@@ -142682,11 +142704,11 @@ void GL::render() {
     SDL_RenderPresent(renderer);
 
 }
-void GL::clean() const {
+void GL::Clean() const {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
-    cout << "Game quit!..." << endl;
+    cout << "Game quit..." << endl;
 }
 
 Vector2& Vector2::operator+=(const Vector2& other) {
@@ -142775,8 +142797,9 @@ void Collider::Update() {
     }
 }
 
-
-
+[[maybe_unused]] bool Input::GetKey(Key key) {
+    return keys->at(key);
+}
 void Sprite::Update() {
     int w, h;
     SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
@@ -142798,24 +142821,16 @@ Vector2 Transform::TruePos() const {
     return truePos;
 }
 
-void Sprite::SetImage(const char* spr) {
+[[maybe_unused]] void Sprite::SetImage(const char* spr) {
     sprite = spr;
     texture = IMG_LoadTexture(GL::Game()->renderer, sprite);
     cout << 
-# 249 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
+# 262 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
            SDL_GetError
-# 249 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
+# 262 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
                        () << endl;
     int w, h;
-    SDL_QueryTexture(texture, 
-# 251 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
-                             __null
-# 251 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
-                                 , 
-# 251 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
-                                   __null
-# 251 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
-                                       , &w, &h);
+    SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
     rect->x = parent->transform.TruePos().x - (w * parent->transform.scale.x) / 2;
     rect->y = parent->transform.TruePos().y - (h * parent->transform.scale.y) / 2;
     rect->w = w * parent->transform.scale.x;
@@ -142824,20 +142839,12 @@ void Sprite::SetImage(const char* spr) {
 void Sprite::Start() {
     texture = IMG_LoadTexture(GL::Game()->renderer, sprite);
     cout << 
-# 259 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
+# 272 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
            SDL_GetError
-# 259 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
+# 272 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
                        () << endl;
     int w, h;
-    SDL_QueryTexture(texture, 
-# 261 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
-                             __null
-# 261 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
-                                 , 
-# 261 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
-                                   __null
-# 261 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
-                                       , &w, &h);
+    SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
     rect->x = parent->transform.TruePos().x - (w * parent->transform.scale.x) / 2;
     rect->y = parent->transform.TruePos().y - (h * parent->transform.scale.y) / 2;
     rect->w = w * parent->transform.scale.x;

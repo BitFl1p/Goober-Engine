@@ -4,52 +4,65 @@
 #include <utility>
 #include "Goober.h"
 using namespace std;
-using namespace Goober;
+using namespace goober;
 
 GL* GL::game = nullptr;
+map<Input::Key, bool>* Input::keys = new map<Input::Key, bool>{};
 GL::GL() = default;
 GL::~GL() = default;
-void GL::init(const char* title)
+void GL::Init(const char* title, int x, int y)
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
     {
         IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
-        cout << "Subsystems Initialised!..." << endl;
+        cout << "Subsystems Initialised..." << endl;
 
-        window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 600, 400, SDL_WINDOW_SHOWN);
-        if (window) cout << "Window Created!..." << endl;
+        window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,
+								  x, y, SDL_WINDOW_SHOWN);
+        if (window) cout << "Window Created..." << endl;
 
         renderer = SDL_CreateRenderer(window, -1, 0);
         if (renderer) {
             SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
             SDL_RenderClear(renderer);
             SDL_RenderPresent(renderer);
-            cout << "Renderer Created!..." << endl;
+            cout << "Renderer Created..." << endl;
         }
 
         isRunning = true;
     }
     else isRunning = false;
 }
-void GL::SetWindowTitle(const char* title) const {
+
+[[maybe_unused]] void GL::SetWindowTitle(const char* title) const {
     SDL_SetWindowTitle(window, title);
 }
 
-void GL::SetWindowPos(Vector2 pos) const {
+[[maybe_unused]] void GL::SetWindowPos(Vector2 pos) const {
     SDL_SetWindowPosition(window, (int)pos.x, (int)-pos.y);
 }
-void GL::handleEvents()
+void GL::HandleEvents()
 {
     SDL_Event event;
-    SDL_PollEvent(&event);
-    switch (event.type) {
-    case SDL_QUIT:
-    {
-        isRunning = false;
-        break;
-    }
-    default: break;
-    }
+    while(SDL_PollEvent(&event)) {
+	    switch (event.type) {
+	    case SDL_QUIT:
+			isRunning = false;
+	        break;
+
+	    case SDL_KEYDOWN:
+		    cout << "Key Down: " << char(event.key.keysym.sym) << "\n";
+			break;
+
+		case SDL_KEYUP:
+		    cout << "Key Up: " << char(event.key.keysym.sym) << "\n";
+			break;
+
+		default:
+			break;
+
+	    }
+	}
 }
 GL* GL::Game() {
     if (game == nullptr)
@@ -65,11 +78,11 @@ GameObject::GameObject(Transform transform, vector<Component*> components) {
 GameObject::GameObject(vector<Component*> components) {
     this->transform = Transform();
     this->components = std::move(components);
-    GL::Game()->MakeObject(this);
+	GL::Game()->MakeObject(this);
 }
 
 void GameObject::Update() {
-    for (auto comp : this->components) {
+    for (Component* comp : this->components) {
         comp->Update();
         if (strcmp(SDL_GetError(), "") != 0)
         {
@@ -79,7 +92,7 @@ void GameObject::Update() {
     }
 }
 void GameObject::Start() {
-    for (auto comp : this->components) {
+    for (Component* comp : this->components) {
         comp->Start();
         if (strcmp(SDL_GetError(), "") != 0)
         {
@@ -88,21 +101,20 @@ void GameObject::Start() {
         }
     }
 }
-void GL::start() {
+void GL::Start() {
     for (auto obj : GL::Game()->gameObjects) obj->Start();
 }
 void GL::MakeObject(GameObject* obj) {
     GL::Game()->gameObjects.push_back(obj);
     for (auto comp : obj->components) comp->parent = obj;
 }
-void GL::update()
+void GL::Update()
 {
     for (GameObject* obj : GL::Game()->gameObjects) {
         obj->Update();
     }
-
 }
-void GL::render() {
+void GL::Render() {
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
     for (auto tex : renderTextures) {
@@ -127,11 +139,11 @@ void GL::render() {
     SDL_RenderPresent(renderer);
 
 }
-void GL::clean() const {
+void GL::Clean() const {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
-    cout << "Game quit!..." << endl;
+    cout << "Game quit..." << endl;
 }
 
 Vector2& Vector2::operator+=(const Vector2& other) {
@@ -219,9 +231,10 @@ void Collider::Update() {
         }
     }
 }
-//bool Input::GetKey(int key) {
-//    return GetKeyState(key) & 0x8000;
-//}
+
+[[maybe_unused]] bool Input::GetKey(Key key) {
+    return keys->at(key);
+}
 void Sprite::Update() {
     int w, h;
     SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
@@ -243,12 +256,12 @@ Vector2 Transform::TruePos() const {
     return truePos;
 }
 
-void Sprite::SetImage(const char* spr) {
+[[maybe_unused]] void Sprite::SetImage(const char* spr) {
     sprite = spr;
     texture = IMG_LoadTexture(GL::Game()->renderer, sprite);
     cout << IMG_GetError() << endl;
     int w, h;
-    SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+    SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
     rect->x = parent->transform.TruePos().x - (w * parent->transform.scale.x) / 2;
     rect->y = parent->transform.TruePos().y - (h * parent->transform.scale.y) / 2;
     rect->w = w * parent->transform.scale.x;
@@ -258,7 +271,7 @@ void Sprite::Start() {
     texture = IMG_LoadTexture(GL::Game()->renderer, sprite);
     cout << IMG_GetError() << endl;
     int w, h;
-    SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+    SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
     rect->x = parent->transform.TruePos().x - (w * parent->transform.scale.x) / 2;
     rect->y = parent->transform.TruePos().y - (h * parent->transform.scale.y) / 2;
     rect->w = w * parent->transform.scale.x;

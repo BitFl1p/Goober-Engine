@@ -1,24 +1,17 @@
 #include "../Engine/Goober.h"
-#include <iostream>
 #include <cmath>
-#include <filesystem>
-namespace fs = std::filesystem;
 using namespace std;
-using namespace Goober;
+using namespace goober;
 
 
 class PlayerInput : virtual public Component {
 public:
-	float count = 0;
+	double count = 0;
 	float speed = 2.5;
 	Sprite* sprite = nullptr;
-
 	void Start() override {
 		sprite = parent->GetComponent<Sprite>();
 		GL::Game()->debug = true;
-
-		GL::Game()->SetWindowTitle("peanits");
-        cout << "Current path is " << filesystem::current_path().root_path() << '\n';
 	}
 	void Update() override {
 
@@ -26,6 +19,7 @@ public:
 		GL::Game()->SetWindowPos(Camera()->position);
 		parent->transform.scale = Vector2(3, 3);
 		count += DeltaTime() / 10;
+		parent->transform.position.x = sin(count / 100.f) * 1000;
 		//parent->transform.scale += sin(count);
 		//parent->transform.angle += 5 * DeltaTime();
 		//if (Input::GetKey(VK_UP)) parent->transform.position.y += speed * DeltaTime();
@@ -35,10 +29,9 @@ public:
 	}
 };
 
-GameObject player = GameObject(
-	{
-		new PlayerInput(),
-		new Sprite("../Assets/Sprites/buh.png"),
-		new Collider(16, 16, false)
-	});
+GameObject player = GameObject({
+	new PlayerInput(),
+    new Sprite("../Assets/Sprites/buh.png"),
+    new Collider(16, 16, false)
+});
 

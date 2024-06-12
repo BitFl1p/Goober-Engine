@@ -8,19 +8,14 @@
 #include <map>
 
 using namespace std;
-namespace Goober {
+namespace goober {
     class Sprite;
     struct Vector2 {
     public:
         double x, y;
-        Vector2() {
-            x = 0;
-            y = 0;
-        }
-        Vector2(double x, double y) {
-            this->x = x;
-            this->y = y;
-        }
+        Vector2() : x(0), y(0) {}
+        Vector2(double x, double y) : x(x), y(y) {}
+
         static Vector2 Lerp(Vector2 from, Vector2 to, double t);
         Vector2& operator+=(const Vector2& other);
         Vector2 operator+(Vector2 other);
@@ -77,12 +72,25 @@ namespace Goober {
 
 
     };
+
     class Input {
     public:
-        //static bool GetKey(int key);
+	    enum Key {
+		    A = 'a', B = 'b', C = 'c', D = 'd', E = 'e', F = 'f',
+		    G = 'g', H = 'h', I = 'i', J = 'j', K = 'k', L = 'l',
+		    M = 'm', N = 'n', O = 'o', P = 'p', Q = 'q', R = 'r',
+		    S = 's', T = 't', U = 'u', V = 'v', W = 'w', X = 'x', Y = 'y', Z = 'z',
+		    ONE = 1, TWO = 2, THREE = 3, FOUR = 4, FIVE = 5, SIX = 6, SEVEN = 7, EIGHT = 8, NINE = 9, ZERO = 0,
+		    NUM_ONE, NUM_TWO, NUM_THREE, NUM_FOUR, NUM_FIVE, NUM_SIX, NUM_SEVEN, NUM_EIGHT, NUM_NINE, NUM_ZERO,
+		    SPACE, L_ALT, R_ALT, L_CTRL, R_CTRL, L_SHIFT, R_SHIFT, TAB, CAPS_LOCK, ESC,
+	    };
+	private:
+	    static map<Key, bool>* keys;
+	public:
+	    [[maybe_unused]] static bool GetKey(Key key);
     };
-    class GL
-    {
+
+    class GL {
     private:
         bool isRunning{};
         GL();
@@ -92,15 +100,16 @@ namespace Goober {
         bool debug = false;
         vector<GameObject*> gameObjects;
         ~GL();
-        void init(const char* title);
+        void Init(const char* title, int x, int y);
         static void MakeObject(GameObject* obj);
-        void handleEvents();
-        static void start();
-        static void update();
-        void render();
-        void clean() const;
+        void HandleEvents();
+        static void Start();
+        static void Update();
+        void Render();
+        void Clean() const;
         [[nodiscard]] bool running() const { return isRunning; }
-        void SetWindowTitle(const char* title) const;
+
+	    [[maybe_unused]] void SetWindowTitle(const char* title) const;
         void SetWindowPos(Vector2 pos) const;
         vector<Sprite*> renderTextures;
         double deltaTime{};
@@ -111,8 +120,8 @@ namespace Goober {
         Vector2 GetScreenSize() const;
 
         Transform* camera{};
-
     };
+
     static Transform* Camera() {
         if (GL::Game()->camera == nullptr)
             GL::Game()->camera = new Transform();
@@ -122,20 +131,7 @@ namespace Goober {
     static double DeltaTime() {
         return GL::Game()->deltaTime;
     }
-    /*class Rect {
-    public:
-        double x1, x2, y1, y2;
-        Rect(double x1, double x2, double y1, double y2) {
-            this->x1 = x1;
-            this->x2 = x2;
-            this->y1 = y1;
-            this->y2 = y2;
-        }
-        static bool IsOverlapped(Rect* first, Rect* second) {
-            if(first->x1 < second->x1 && first->x2 < second->x1 || first->x1 < second->x2 && first->x2 < second->x2)
-            if(first->y1 < second->y1 && first->y2 < second->y1 || first->y1 < second->y2 && first->y2 < second->y2)
-        }
-    };*/
+
     class Sprite : virtual public Component
     {
     public:
@@ -143,7 +139,8 @@ namespace Goober {
         SDL_Texture* texture = nullptr;
         SDL_Rect* rect = new SDL_Rect();
         const char* sprite{};
-        void SetImage(const char* spr);
+
+	    [[maybe_unused]] void SetImage(const char* spr);
         explicit Sprite(const char* sprite) : sprite(sprite) {}
         Sprite() = default;
         void Update() override;
