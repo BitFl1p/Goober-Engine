@@ -1,13 +1,14 @@
 #include <iostream>
 #include "SDL.h"
 #include <map>
+#include <utility>
 #include "Goober.h"
 using namespace std;
 using namespace Goober;
 
 GL* GL::game = nullptr;
-GL::GL() {}
-GL::~GL() {}
+GL::GL() = default;
+GL::~GL() = default;
 void GL::init(const char* title)
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
@@ -30,12 +31,12 @@ void GL::init(const char* title)
     }
     else isRunning = false;
 }
-void GL::SetWindowTitle(const char* title) {
+void GL::SetWindowTitle(const char* title) const {
     SDL_SetWindowTitle(window, title);
 }
 
-void GL::SetWindowPos(Vector2 pos) {
-    SDL_SetWindowPosition(window, pos.x, -pos.y);
+void GL::SetWindowPos(Vector2 pos) const {
+    SDL_SetWindowPosition(window, (int)pos.x, (int)-pos.y);
 }
 void GL::handleEvents()
 {
@@ -56,21 +57,21 @@ GL* GL::Game() {
     return game;
 }
 GameObject::GameObject(Transform transform, vector<Component*> components) {
-    this->transform = transform;
-    this->components = components;
+    this->transform = std::move(transform);
+    this->components = std::move(components);
     GL::Game()->MakeObject(this);
 }
 
 GameObject::GameObject(vector<Component*> components) {
     this->transform = Transform();
-    this->components = components;
+    this->components = std::move(components);
     GL::Game()->MakeObject(this);
 }
 
 void GameObject::Update() {
     for (auto comp : this->components) {
         comp->Update();
-        if ((string)SDL_GetError() != "")
+        if (strcmp(SDL_GetError(), "") != 0)
         {
             cout << SDL_GetError() << endl;
             SDL_ClearError();
@@ -80,7 +81,7 @@ void GameObject::Update() {
 void GameObject::Start() {
     for (auto comp : this->components) {
         comp->Start();
-        if ((string)SDL_GetError() != "")
+        if (strcmp(SDL_GetError(), "") != 0)
         {
             cout << SDL_GetError() << endl;
             SDL_ClearError();
@@ -105,7 +106,7 @@ void GL::render() {
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
     for (auto tex : renderTextures) {
-        SDL_Point* pivot = new SDL_Point();
+        auto* pivot = new SDL_Point();
         pivot->x = tex->rect->w / 2;
         pivot->y = tex->rect->h / 2;
         SDL_RendererFlip flipArgs = SDL_FLIP_NONE;
@@ -115,18 +116,18 @@ void GL::render() {
             if (tex->flipY) flipArgs = (SDL_RendererFlip)(flipArgs | SDL_FLIP_VERTICAL);
         }
 
-        SDL_RenderCopyEx(renderer, tex->texture, NULL, tex->rect, tex->parent->transform.angle, pivot, flipArgs);
+        SDL_RenderCopyEx(renderer, tex->texture, nullptr, tex->rect, tex->parent->transform.angle, pivot, flipArgs);
 
     }
     if (debug) for (auto gameObject : GL::Game()->gameObjects) {
-        Collider* collider = gameObject->GetComponent<Collider>();
+        auto* collider = gameObject->GetComponent<Collider>();
         if (collider) SDL_RenderDrawRect(GL::Game()->renderer, collider->rect);
     }
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderPresent(renderer);
 
 }
-void GL::clean() {
+void GL::clean() const {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
@@ -149,39 +150,39 @@ Vector2& Vector2::operator-=(const Vector2& other) {
 Vector2 Vector2::operator-(const Vector2 other) {
     return *this -= other;
 }
-Vector2& Vector2::operator+=(const float& other) {
+Vector2& Vector2::operator+=(const double& other) {
     this->x = this->x + other;
     this->y = this->y + other;
     return *this;
 }
-Vector2 Vector2::operator+(const float other) {
+Vector2 Vector2::operator+(const double other) {
     return *this += other;
 }
-Vector2& Vector2::operator-=(const float& other) {
+Vector2& Vector2::operator-=(const double& other) {
     this->x = this->x - other;
     this->y = this->y - other;
     return *this;
 }
-Vector2 Vector2::operator-(const float other) {
+Vector2 Vector2::operator-(const double other) {
     return *this -= other;
 }
-Vector2& Vector2::operator*=(const float& other) {
+Vector2& Vector2::operator*=(const double& other) {
     this->x = this->x * other;
     this->y = this->y * other;
     return *this;
 }
-Vector2 Vector2::operator*(const float other) {
+Vector2 Vector2::operator*(const double other) {
     return *this -= other;
 }
-Vector2& Vector2::operator/=(const float& other) {
+Vector2& Vector2::operator/=(const double& other) {
     this->x = this->x * other;
     this->y = this->y * other;
     return *this;
 }
-Vector2 Vector2::operator/(const float other) {
+Vector2 Vector2::operator/(const double other) {
     return *this -= other;
 }
-Vector2 Vector2::Lerp(Vector2 from, Vector2 to, float t) {
+Vector2 Vector2::Lerp(Vector2 from, Vector2 to, double t) {
     Vector2 target = to - from;
     target *= t / 10 * DeltaTime();
     return from + target;
@@ -202,17 +203,18 @@ void Collider::Update() {
     rect->w = w * parent->transform.scale.x;
     rect->h = h * parent->transform.scale.y;
     for (auto gameObject : GL::Game()->gameObjects) {
-        Collider* collider = gameObject->GetComponent<Collider>();
-        SDL_Rect* intersect = new SDL_Rect();
+        auto* collider = gameObject->GetComponent<Collider>();
+        auto* intersect = new SDL_Rect();
         if (collider) if (this != collider && SDL_IntersectRect(this->rect, collider->rect, intersect)) {
             if (!locked) {
-
-                if (intersect->w > intersect->h)
+                if (intersect->w > intersect->h) {
                     if (intersect->y > collider->rect->y) parent->transform.position.y -= intersect->h;
                     else parent->transform.position.y += intersect->h;
-                else if (intersect->h > intersect->w)
+                }
+                else if (intersect->h > intersect->w) {
                     if (intersect->x > collider->rect->x) parent->transform.position.x += intersect->w;
                     else parent->transform.position.x -= intersect->w;
+                }
             }
         }
     }
@@ -222,21 +224,20 @@ void Collider::Update() {
 //}
 void Sprite::Update() {
     int w, h;
-    SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+    SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
     rect->x = parent->transform.TruePos().x - (w * parent->transform.scale.x) / 2;
     rect->y = parent->transform.TruePos().y - (h * parent->transform.scale.y) / 2;
     rect->w = w * parent->transform.scale.x;
     rect->h = h * parent->transform.scale.y;
 }
-Vector2 GL::GetScreenSize() {
+Vector2 GL::GetScreenSize() const {
     int x, y;
     SDL_GetWindowSize(GL::window, &x, &y);
-    return Vector2(x, y);
+    return {(double)x, (double)y};
 }
-Vector2 Transform::TruePos() {
+Vector2 Transform::TruePos() const {
     Vector2 truePos = Vector2();
     Vector2 screen = GL::Game()->GetScreenSize();
-    //cout << GL::camera.position.x << endl;
     truePos.x = (position.x - Camera()->position.x) + (screen.x / 2);
     truePos.y = (-position.y + Camera()->position.y) + (screen.y / 2);
     return truePos;
@@ -244,9 +245,8 @@ Vector2 Transform::TruePos() {
 
 void Sprite::SetImage(const char* spr) {
     sprite = spr;
-    SDL_Surface* surface = IMG_Load(sprite);
-    texture = SDL_CreateTextureFromSurface(GL::Game()->renderer, surface);
-    SDL_FreeSurface(surface);
+    texture = IMG_LoadTexture(GL::Game()->renderer, sprite);
+    cout << IMG_GetError() << endl;
     int w, h;
     SDL_QueryTexture(texture, NULL, NULL, &w, &h);
     rect->x = parent->transform.TruePos().x - (w * parent->transform.scale.x) / 2;
@@ -255,10 +255,8 @@ void Sprite::SetImage(const char* spr) {
     rect->h = h * parent->transform.scale.y;
 }
 void Sprite::Start() {
-    SDL_Surface* surface = IMG_Load(sprite);
+    texture = IMG_LoadTexture(GL::Game()->renderer, sprite);
     cout << IMG_GetError() << endl;
-    texture = SDL_CreateTextureFromSurface(GL::Game()->renderer, surface);
-    SDL_FreeSurface(surface);
     int w, h;
     SDL_QueryTexture(texture, NULL, NULL, &w, &h);
     rect->x = parent->transform.TruePos().x - (w * parent->transform.scale.x) / 2;

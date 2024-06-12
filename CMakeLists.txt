@@ -5,8 +5,8 @@ set(CMAKE_CXX_STANDARD 26)
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
-include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS}  )
-file(GLOB SCRIPTS_SRC ${PROJECT_SOURCE_DIR}/Engine/*.cpp)
+include_directories(${SDL2_INCLUDE_DIRS})
+file(GLOB SCRIPTS_SRC ${PROJECT_SOURCE_DIR}/Scripts/*.cpp)
 
 add_executable(GooberEngine
         Engine/main.cpp
@@ -16,4 +16,4 @@ add_executable(GooberEngine
 
 target_link_libraries(GooberEngine
         ${SDL2_LIBRARIES}
-        ${SDL2_IMAGE_LIBRARIES})
+        SDL2_image)

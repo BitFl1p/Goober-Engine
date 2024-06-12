@@ -12,50 +12,50 @@ namespace Goober {
     class Sprite;
     struct Vector2 {
     public:
-        float x, y;
+        double x, y;
         Vector2() {
             x = 0;
             y = 0;
         }
-        Vector2(float x, float y) {
+        Vector2(double x, double y) {
             this->x = x;
             this->y = y;
         }
-        static Vector2 Lerp(Vector2 from, Vector2 to, float t);
+        static Vector2 Lerp(Vector2 from, Vector2 to, double t);
         Vector2& operator+=(const Vector2& other);
         Vector2 operator+(Vector2 other);
         Vector2& operator-=(const Vector2& other);
         Vector2 operator-(Vector2 other);
-        Vector2& operator+=(const float& other);
-        Vector2 operator+(float other);
-        Vector2& operator-=(const float& other);
-        Vector2 operator-(float other);
-        Vector2& operator*=(const float& other);
-        Vector2 operator*(float other);
-        Vector2& operator/=(const float& other);
-        Vector2 operator/(float other);
+        Vector2& operator+=(const double& other);
+        Vector2 operator+(double other);
+        Vector2& operator-=(const double& other);
+        Vector2 operator-(double other);
+        Vector2& operator*=(const double& other);
+        Vector2 operator*(double other);
+        Vector2& operator/=(const double& other);
+        Vector2 operator/(double other);
 
     };
     class GameObject;
     class Component {
     public:
-        GameObject* parent = 0;
-        Component() {}
+        GameObject* parent = nullptr;
+        Component() = default;
         virtual void Update() {}; virtual void Start() {};
     };
     class Transform : virtual public Component
     {
     public:
         Vector2 position, scale;
-        float angle;
+        double angle;
         Transform()
         {
             position = Vector2();
             angle = 0;
             scale = Vector2(1, 1);
         }
-        Vector2 TruePos();
-        void Update() {} void Start() {}
+        Vector2 TruePos() const;
+        void Update() override {} void Start() override {}
     };
     class GameObject
     {
@@ -71,9 +71,9 @@ namespace Goober {
             }
             return NULL;
         }
-        GameObject(vector<Component*> components);
+        explicit GameObject(vector<Component*> components);
 
-        GameObject() {}
+        GameObject() = default;
 
 
     };
@@ -84,7 +84,7 @@ namespace Goober {
     class GL
     {
     private:
-        bool isRunning;
+        bool isRunning{};
         GL();
         static GL* game;
     public:
@@ -93,24 +93,24 @@ namespace Goober {
         vector<GameObject*> gameObjects;
         ~GL();
         void init(const char* title);
-        void MakeObject(GameObject* obj);
+        static void MakeObject(GameObject* obj);
         void handleEvents();
-        void start();
-        void update();
+        static void start();
+        static void update();
         void render();
-        void clean();
-        bool running() { return isRunning; }
-        void SetWindowTitle(const char* title);
-        void SetWindowPos(Vector2 pos);
+        void clean() const;
+        [[nodiscard]] bool running() const { return isRunning; }
+        void SetWindowTitle(const char* title) const;
+        void SetWindowPos(Vector2 pos) const;
         vector<Sprite*> renderTextures;
-        double deltaTime;
+        double deltaTime{};
 
-        SDL_Renderer* renderer;
+        SDL_Renderer* renderer{};
 
-        SDL_Window* window;
-        Vector2 GetScreenSize();
+        SDL_Window* window{};
+        Vector2 GetScreenSize() const;
 
-        Transform* camera;
+        Transform* camera{};
 
     };
     static Transform* Camera() {
@@ -140,14 +140,14 @@ namespace Goober {
     {
     public:
         bool flipX = false, flipY = false;
-        SDL_Texture* texture;
+        SDL_Texture* texture = nullptr;
         SDL_Rect* rect = new SDL_Rect();
-        const char* sprite;
+        const char* sprite{};
         void SetImage(const char* spr);
-        Sprite(const char* sprite) { this->sprite = sprite; }
-        Sprite() {}
-        void Update();
-        void Start();
+        explicit Sprite(const char* sprite) : sprite(sprite) {}
+        Sprite() = default;
+        void Update() override;
+        void Start() override;
     };
     class Collider : virtual public Component {
     public:
@@ -157,8 +157,8 @@ namespace Goober {
         Collider(double w, double h);
         Collider(double w, double h, bool lock);
 
-        void Update();
-        void Start() {}
+        void Update() override;
+        void Start() override {}
     };
 }
 

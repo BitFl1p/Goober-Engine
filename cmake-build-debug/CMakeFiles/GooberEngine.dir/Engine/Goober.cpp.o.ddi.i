@@ -137140,6 +137140,172 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 }
 # 4 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 2
+# 1 "/usr/include/c++/14.1.1/utility" 1 3
+# 58 "/usr/include/c++/14.1.1/utility" 3
+       
+# 59 "/usr/include/c++/14.1.1/utility" 3
+# 68 "/usr/include/c++/14.1.1/utility" 3
+# 1 "/usr/include/c++/14.1.1/bits/stl_relops.h" 1 3
+# 62 "/usr/include/c++/14.1.1/bits/stl_relops.h" 3
+namespace std __attribute__ ((__visibility__ ("default")))
+{
+
+
+  namespace rel_ops
+  {
+# 86 "/usr/include/c++/14.1.1/bits/stl_relops.h" 3
+    template <class _Tp>
+      inline bool
+      operator!=(const _Tp& __x, const _Tp& __y)
+      { return !(__x == __y); }
+# 99 "/usr/include/c++/14.1.1/bits/stl_relops.h" 3
+    template <class _Tp>
+      inline bool
+      operator>(const _Tp& __x, const _Tp& __y)
+      { return __y < __x; }
+# 112 "/usr/include/c++/14.1.1/bits/stl_relops.h" 3
+    template <class _Tp>
+      inline bool
+      operator<=(const _Tp& __x, const _Tp& __y)
+      { return !(__y < __x); }
+# 125 "/usr/include/c++/14.1.1/bits/stl_relops.h" 3
+    template <class _Tp>
+      inline bool
+      operator>=(const _Tp& __x, const _Tp& __y)
+      { return !(__x < __y); }
+  }
+
+
+}
+# 69 "/usr/include/c++/14.1.1/utility" 2 3
+# 96 "/usr/include/c++/14.1.1/utility" 3
+# 1 "/usr/include/c++/14.1.1/bits/version.h" 1 3
+# 47 "/usr/include/c++/14.1.1/bits/version.h" 3
+       
+# 48 "/usr/include/c++/14.1.1/bits/version.h" 3
+# 97 "/usr/include/c++/14.1.1/utility" 2 3
+
+namespace std __attribute__ ((__visibility__ ("default")))
+{
+
+
+
+
+  template <typename _Tp, typename _Up = _Tp>
+    constexpr
+    inline _Tp
+    exchange(_Tp& __obj, _Up&& __new_val)
+    noexcept(__and_<is_nothrow_move_constructible<_Tp>,
+      is_nothrow_assignable<_Tp&, _Up>>::value)
+    { return std::__exchange(__obj, std::forward<_Up>(__new_val)); }
+
+
+
+  template<typename _Tp>
+    [[nodiscard]]
+    constexpr add_const_t<_Tp>&
+    as_const(_Tp& __t) noexcept
+    { return __t; }
+
+  template<typename _Tp>
+    void as_const(const _Tp&&) = delete;
+
+
+
+  template<typename _Tp, typename _Up>
+    constexpr bool
+    cmp_equal(_Tp __t, _Up __u) noexcept
+    {
+      static_assert(__is_standard_integer<_Tp>::value);
+      static_assert(__is_standard_integer<_Up>::value);
+
+      if constexpr (is_signed_v<_Tp> == is_signed_v<_Up>)
+ return __t == __u;
+      else if constexpr (is_signed_v<_Tp>)
+ return __t >= 0 && make_unsigned_t<_Tp>(__t) == __u;
+      else
+ return __u >= 0 && __t == make_unsigned_t<_Up>(__u);
+    }
+
+  template<typename _Tp, typename _Up>
+    constexpr bool
+    cmp_not_equal(_Tp __t, _Up __u) noexcept
+    { return !std::cmp_equal(__t, __u); }
+
+  template<typename _Tp, typename _Up>
+    constexpr bool
+    cmp_less(_Tp __t, _Up __u) noexcept
+    {
+      static_assert(__is_standard_integer<_Tp>::value);
+      static_assert(__is_standard_integer<_Up>::value);
+
+      if constexpr (is_signed_v<_Tp> == is_signed_v<_Up>)
+ return __t < __u;
+      else if constexpr (is_signed_v<_Tp>)
+ return __t < 0 || make_unsigned_t<_Tp>(__t) < __u;
+      else
+ return __u >= 0 && __t < make_unsigned_t<_Up>(__u);
+    }
+
+  template<typename _Tp, typename _Up>
+    constexpr bool
+    cmp_greater(_Tp __t, _Up __u) noexcept
+    { return std::cmp_less(__u, __t); }
+
+  template<typename _Tp, typename _Up>
+    constexpr bool
+    cmp_less_equal(_Tp __t, _Up __u) noexcept
+    { return !std::cmp_less(__u, __t); }
+
+  template<typename _Tp, typename _Up>
+    constexpr bool
+    cmp_greater_equal(_Tp __t, _Up __u) noexcept
+    { return !std::cmp_less(__t, __u); }
+
+  template<typename _Res, typename _Tp>
+    constexpr bool
+    in_range(_Tp __t) noexcept
+    {
+      static_assert(__is_standard_integer<_Res>::value);
+      static_assert(__is_standard_integer<_Tp>::value);
+      using __gnu_cxx::__int_traits;
+
+      if constexpr (is_signed_v<_Tp> == is_signed_v<_Res>)
+ return __int_traits<_Res>::__min <= __t
+   && __t <= __int_traits<_Res>::__max;
+      else if constexpr (is_signed_v<_Tp>)
+ return __t >= 0
+   && make_unsigned_t<_Tp>(__t) <= __int_traits<_Res>::__max;
+      else
+ return __t <= make_unsigned_t<_Res>(__int_traits<_Res>::__max);
+    }
+
+
+
+
+  template<typename _Tp>
+    [[nodiscard]]
+    constexpr underlying_type_t<_Tp>
+    to_underlying(_Tp __value) noexcept
+    { return static_cast<underlying_type_t<_Tp>>(__value); }
+# 216 "/usr/include/c++/14.1.1/utility" 3
+  [[noreturn,__gnu__::__always_inline__]]
+  inline void
+  unreachable()
+  {
+
+
+
+
+
+    __builtin_unreachable();
+
+  }
+
+
+
+}
+# 5 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 2
 # 1 "/home/bit/Dev/GooberEngine/Engine/Goober.h" 1
        
 
@@ -142235,50 +142401,50 @@ namespace Goober {
     class Sprite;
     struct Vector2 {
     public:
-        float x, y;
+        double x, y;
         Vector2() {
             x = 0;
             y = 0;
         }
-        Vector2(float x, float y) {
+        Vector2(double x, double y) {
             this->x = x;
             this->y = y;
         }
-        static Vector2 Lerp(Vector2 from, Vector2 to, float t);
+        static Vector2 Lerp(Vector2 from, Vector2 to, double t);
         Vector2& operator+=(const Vector2& other);
         Vector2 operator+(Vector2 other);
         Vector2& operator-=(const Vector2& other);
         Vector2 operator-(Vector2 other);
-        Vector2& operator+=(const float& other);
-        Vector2 operator+(float other);
-        Vector2& operator-=(const float& other);
-        Vector2 operator-(float other);
-        Vector2& operator*=(const float& other);
-        Vector2 operator*(float other);
-        Vector2& operator/=(const float& other);
-        Vector2 operator/(float other);
+        Vector2& operator+=(const double& other);
+        Vector2 operator+(double other);
+        Vector2& operator-=(const double& other);
+        Vector2 operator-(double other);
+        Vector2& operator*=(const double& other);
+        Vector2 operator*(double other);
+        Vector2& operator/=(const double& other);
+        Vector2 operator/(double other);
 
     };
     class GameObject;
     class Component {
     public:
-        GameObject* parent = 0;
-        Component() {}
+        GameObject* parent = nullptr;
+        Component() = default;
         virtual void Update() {}; virtual void Start() {};
     };
     class Transform : virtual public Component
     {
     public:
         Vector2 position, scale;
-        float angle;
+        double angle;
         Transform()
         {
             position = Vector2();
             angle = 0;
             scale = Vector2(1, 1);
         }
-        Vector2 TruePos();
-        void Update() {} void Start() {}
+        Vector2 TruePos() const;
+        void Update() override {} void Start() override {}
     };
     class GameObject
     {
@@ -142298,9 +142464,9 @@ namespace Goober {
 # 72 "/home/bit/Dev/GooberEngine/Engine/Goober.h"
                       ;
         }
-        GameObject(vector<Component*> components);
+        explicit GameObject(vector<Component*> components);
 
-        GameObject() {}
+        GameObject() = default;
 
 
     };
@@ -142311,7 +142477,7 @@ namespace Goober {
     class GL
     {
     private:
-        bool isRunning;
+        bool isRunning{};
         GL();
         static GL* game;
     public:
@@ -142320,24 +142486,24 @@ namespace Goober {
         vector<GameObject*> gameObjects;
         ~GL();
         void init(const char* title);
-        void MakeObject(GameObject* obj);
+        static void MakeObject(GameObject* obj);
         void handleEvents();
-        void start();
-        void update();
+        static void start();
+        static void update();
         void render();
-        void clean();
-        bool running() { return isRunning; }
-        void SetWindowTitle(const char* title);
-        void SetWindowPos(Vector2 pos);
+        void clean() const;
+        [[nodiscard]] bool running() const { return isRunning; }
+        void SetWindowTitle(const char* title) const;
+        void SetWindowPos(Vector2 pos) const;
         vector<Sprite*> renderTextures;
-        double deltaTime;
+        double deltaTime{};
 
-        SDL_Renderer* renderer;
+        SDL_Renderer* renderer{};
 
-        SDL_Window* window;
-        Vector2 GetScreenSize();
+        SDL_Window* window{};
+        Vector2 GetScreenSize() const;
 
-        Transform* camera;
+        Transform* camera{};
 
     };
     static Transform* Camera() {
@@ -142354,14 +142520,14 @@ namespace Goober {
     {
     public:
         bool flipX = false, flipY = false;
-        SDL_Texture* texture;
+        SDL_Texture* texture = nullptr;
         SDL_Rect* rect = new SDL_Rect();
-        const char* sprite;
+        const char* sprite{};
         void SetImage(const char* spr);
-        Sprite(const char* sprite) { this->sprite = sprite; }
-        Sprite() {}
-        void Update();
-        void Start();
+        explicit Sprite(const char* sprite) : sprite(sprite) {}
+        Sprite() = default;
+        void Update() override;
+        void Start() override;
     };
     class Collider : virtual public Component {
     public:
@@ -142371,36 +142537,36 @@ namespace Goober {
         Collider(double w, double h);
         Collider(double w, double h, bool lock);
 
-        void Update();
-        void Start() {}
+        void Update() override;
+        void Start() override {}
     };
 }
-# 5 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 2
+# 6 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 2
 using namespace std;
 using namespace Goober;
 
 GL* GL::game = nullptr;
-GL::GL() {}
-GL::~GL() {}
+GL::GL() = default;
+GL::~GL() = default;
 void GL::init(const char* title)
 {
     if (SDL_Init(
-# 13 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
+# 14 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
                 ( 0x00000001u | 0x00000010u | 0x00000020u | 0x00004000u | 0x00000200u | 0x00001000u | 0x00002000u | 0x00008000u )
-# 13 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
+# 14 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
                                    ) == 0)
     {
         IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG);
         cout << "Subsystems Initialised!..." << endl;
 
         window = SDL_CreateWindow(title, 
-# 18 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
+# 19 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
                                         (0x2FFF0000u|(0))
-# 18 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
+# 19 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
                                                               , 
-# 18 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
+# 19 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
                                                                 (0x2FFF0000u|(0))
-# 18 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
+# 19 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
                                                                                       , 600, 400, SDL_WINDOW_SHOWN);
         if (window) cout << "Window Created!..." << endl;
 
@@ -142416,12 +142582,12 @@ void GL::init(const char* title)
     }
     else isRunning = false;
 }
-void GL::SetWindowTitle(const char* title) {
+void GL::SetWindowTitle(const char* title) const {
     SDL_SetWindowTitle(window, title);
 }
 
-void GL::SetWindowPos(Vector2 pos) {
-    SDL_SetWindowPosition(window, pos.x, -pos.y);
+void GL::SetWindowPos(Vector2 pos) const {
+    SDL_SetWindowPosition(window, (int)pos.x, (int)-pos.y);
 }
 void GL::handleEvents()
 {
@@ -142442,21 +142608,21 @@ GL* GL::Game() {
     return game;
 }
 GameObject::GameObject(Transform transform, vector<Component*> components) {
-    this->transform = transform;
-    this->components = components;
+    this->transform = std::move(transform);
+    this->components = std::move(components);
     GL::Game()->MakeObject(this);
 }
 
 GameObject::GameObject(vector<Component*> components) {
     this->transform = Transform();
-    this->components = components;
+    this->components = std::move(components);
     GL::Game()->MakeObject(this);
 }
 
 void GameObject::Update() {
     for (auto comp : this->components) {
         comp->Update();
-        if ((string)SDL_GetError() != "")
+        if (strcmp(SDL_GetError(), "") != 0)
         {
             cout << SDL_GetError() << endl;
             SDL_ClearError();
@@ -142466,7 +142632,7 @@ void GameObject::Update() {
 void GameObject::Start() {
     for (auto comp : this->components) {
         comp->Start();
-        if ((string)SDL_GetError() != "")
+        if (strcmp(SDL_GetError(), "") != 0)
         {
             cout << SDL_GetError() << endl;
             SDL_ClearError();
@@ -142491,36 +142657,32 @@ void GL::render() {
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
     for (auto tex : renderTextures) {
-        SDL_Point* pivot = new SDL_Point();
+        auto* pivot = new SDL_Point();
         pivot->x = tex->rect->w / 2;
         pivot->y = tex->rect->h / 2;
         SDL_RendererFlip flipArgs = SDL_FLIP_NONE;
         if (tex->flipX || tex->flipY) {
             flipArgs = (SDL_RendererFlip)
-# 113 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
+# 114 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
                                         __null
-# 113 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
+# 114 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
                                             ;
             if (tex->flipX) flipArgs = (SDL_RendererFlip)(flipArgs | SDL_FLIP_HORIZONTAL);
             if (tex->flipY) flipArgs = (SDL_RendererFlip)(flipArgs | SDL_FLIP_VERTICAL);
         }
 
-        SDL_RenderCopyEx(renderer, tex->texture, 
-# 118 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
-                                                __null
-# 118 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
-                                                    , tex->rect, tex->parent->transform.angle, pivot, flipArgs);
+        SDL_RenderCopyEx(renderer, tex->texture, nullptr, tex->rect, tex->parent->transform.angle, pivot, flipArgs);
 
     }
     if (debug) for (auto gameObject : GL::Game()->gameObjects) {
-        Collider* collider = gameObject->GetComponent<Collider>();
+        auto* collider = gameObject->GetComponent<Collider>();
         if (collider) SDL_RenderDrawRect(GL::Game()->renderer, collider->rect);
     }
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderPresent(renderer);
 
 }
-void GL::clean() {
+void GL::clean() const {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
@@ -142543,39 +142705,39 @@ Vector2& Vector2::operator-=(const Vector2& other) {
 Vector2 Vector2::operator-(const Vector2 other) {
     return *this -= other;
 }
-Vector2& Vector2::operator+=(const float& other) {
+Vector2& Vector2::operator+=(const double& other) {
     this->x = this->x + other;
     this->y = this->y + other;
     return *this;
 }
-Vector2 Vector2::operator+(const float other) {
+Vector2 Vector2::operator+(const double other) {
     return *this += other;
 }
-Vector2& Vector2::operator-=(const float& other) {
+Vector2& Vector2::operator-=(const double& other) {
     this->x = this->x - other;
     this->y = this->y - other;
     return *this;
 }
-Vector2 Vector2::operator-(const float other) {
+Vector2 Vector2::operator-(const double other) {
     return *this -= other;
 }
-Vector2& Vector2::operator*=(const float& other) {
+Vector2& Vector2::operator*=(const double& other) {
     this->x = this->x * other;
     this->y = this->y * other;
     return *this;
 }
-Vector2 Vector2::operator*(const float other) {
+Vector2 Vector2::operator*(const double other) {
     return *this -= other;
 }
-Vector2& Vector2::operator/=(const float& other) {
+Vector2& Vector2::operator/=(const double& other) {
     this->x = this->x * other;
     this->y = this->y * other;
     return *this;
 }
-Vector2 Vector2::operator/(const float other) {
+Vector2 Vector2::operator/(const double other) {
     return *this -= other;
 }
-Vector2 Vector2::Lerp(Vector2 from, Vector2 to, float t) {
+Vector2 Vector2::Lerp(Vector2 from, Vector2 to, double t) {
     Vector2 target = to - from;
     target *= t / 10 * DeltaTime();
     return from + target;
@@ -142596,17 +142758,18 @@ void Collider::Update() {
     rect->w = w * parent->transform.scale.x;
     rect->h = h * parent->transform.scale.y;
     for (auto gameObject : GL::Game()->gameObjects) {
-        Collider* collider = gameObject->GetComponent<Collider>();
-        SDL_Rect* intersect = new SDL_Rect();
+        auto* collider = gameObject->GetComponent<Collider>();
+        auto* intersect = new SDL_Rect();
         if (collider) if (this != collider && SDL_IntersectRect(this->rect, collider->rect, intersect)) {
             if (!locked) {
-
-                if (intersect->w > intersect->h)
+                if (intersect->w > intersect->h) {
                     if (intersect->y > collider->rect->y) parent->transform.position.y -= intersect->h;
                     else parent->transform.position.y += intersect->h;
-                else if (intersect->h > intersect->w)
+                }
+                else if (intersect->h > intersect->w) {
                     if (intersect->x > collider->rect->x) parent->transform.position.x += intersect->w;
                     else parent->transform.position.x -= intersect->w;
+                }
             }
         }
     }
@@ -142616,29 +142779,20 @@ void Collider::Update() {
 
 void Sprite::Update() {
     int w, h;
-    SDL_QueryTexture(texture, 
-# 225 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
-                             __null
-# 225 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
-                                 , 
-# 225 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
-                                   __null
-# 225 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
-                                       , &w, &h);
+    SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
     rect->x = parent->transform.TruePos().x - (w * parent->transform.scale.x) / 2;
     rect->y = parent->transform.TruePos().y - (h * parent->transform.scale.y) / 2;
     rect->w = w * parent->transform.scale.x;
     rect->h = h * parent->transform.scale.y;
 }
-Vector2 GL::GetScreenSize() {
+Vector2 GL::GetScreenSize() const {
     int x, y;
     SDL_GetWindowSize(GL::window, &x, &y);
-    return Vector2(x, y);
+    return {(double)x, (double)y};
 }
-Vector2 Transform::TruePos() {
+Vector2 Transform::TruePos() const {
     Vector2 truePos = Vector2();
     Vector2 screen = GL::Game()->GetScreenSize();
-
     truePos.x = (position.x - Camera()->position.x) + (screen.x / 2);
     truePos.y = (-position.y + Camera()->position.y) + (screen.y / 2);
     return truePos;
@@ -142646,9 +142800,12 @@ Vector2 Transform::TruePos() {
 
 void Sprite::SetImage(const char* spr) {
     sprite = spr;
-    SDL_Surface* surface = IMG_Load(sprite);
-    texture = SDL_CreateTextureFromSurface(GL::Game()->renderer, surface);
-    SDL_FreeSurface(surface);
+    texture = IMG_LoadTexture(GL::Game()->renderer, sprite);
+    cout << 
+# 249 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
+           SDL_GetError
+# 249 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
+                       () << endl;
     int w, h;
     SDL_QueryTexture(texture, 
 # 251 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
@@ -142665,23 +142822,21 @@ void Sprite::SetImage(const char* spr) {
     rect->h = h * parent->transform.scale.y;
 }
 void Sprite::Start() {
-    SDL_Surface* surface = IMG_Load(sprite);
+    texture = IMG_LoadTexture(GL::Game()->renderer, sprite);
     cout << 
 # 259 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
            SDL_GetError
 # 259 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
                        () << endl;
-    texture = SDL_CreateTextureFromSurface(GL::Game()->renderer, surface);
-    SDL_FreeSurface(surface);
     int w, h;
     SDL_QueryTexture(texture, 
-# 263 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
+# 261 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
                              __null
-# 263 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
+# 261 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
                                  , 
-# 263 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
+# 261 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp" 3 4
                                    __null
-# 263 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
+# 261 "/home/bit/Dev/GooberEngine/Engine/Goober.cpp"
                                        , &w, &h);
     rect->x = parent->transform.TruePos().x - (w * parent->transform.scale.x) / 2;
     rect->y = parent->transform.TruePos().y - (h * parent->transform.scale.y) / 2;

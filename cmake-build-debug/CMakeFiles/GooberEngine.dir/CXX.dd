@@ -3,3 +3,5 @@ build CMakeFiles/GooberEngine.dir/Engine/main.cpp.o: dyndep
 
 build CMakeFiles/GooberEngine.dir/Engine/Goober.cpp.o: dyndep
 
+build CMakeFiles/GooberEngine.dir/Scripts/Player.cpp.o: dyndep
+
