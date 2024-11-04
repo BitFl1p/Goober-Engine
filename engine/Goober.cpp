@@ -1,16 +1,15 @@
 #include <iostream>
-#include "SDL.h"
+#include "SDL2/SDL.h"
 #include <map>
 #include <utility>
 #include "Goober.h"
 using namespace std;
 using namespace goober;
 
-GL* GL::game = nullptr;
-map<Input::Key, bool>* Input::keys = new map<Input::Key, bool>{};
-GL::GL() = default;
-GL::~GL() = default;
-void GL::Init(const char* title, int x, int y)
+Gl* Gl::game = nullptr;
+Gl::Gl() = default;
+Gl::~Gl() = default;
+void Gl::Init(const char* title, int x, int y)
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
     {
@@ -34,14 +33,14 @@ void GL::Init(const char* title, int x, int y)
     else isRunning = false;
 }
 
-[[maybe_unused]] void GL::SetWindowTitle(const char* title) const {
+[[maybe_unused]] void Gl::SetWindowTitle(const char* title) const {
     SDL_SetWindowTitle(window, title);
 }
 
-[[maybe_unused]] void GL::SetWindowPos(Vector2 pos) const {
+[[maybe_unused]] void Gl::SetWindowPos(Vector2 pos) const {
     SDL_SetWindowPosition(window, (int)pos.x, (int)-pos.y);
 }
-void GL::HandleEvents()
+void Gl::HandleEvents()
 {
     SDL_Event event;
     while(SDL_PollEvent(&event)) {
@@ -64,21 +63,21 @@ void GL::HandleEvents()
 	    }
 	}
 }
-GL* GL::Game() {
+Gl* Gl::Game() {
     if (game == nullptr)
-        game = new GL;
+        game = new Gl;
     return game;
 }
 GameObject::GameObject(Transform transform, vector<Component*> components) {
     this->transform = std::move(transform);
     this->components = std::move(components);
-    GL::Game()->MakeObject(this);
+    Gl::Game()->MakeObject(this);
 }
 
 GameObject::GameObject(vector<Component*> components) {
     this->transform = Transform();
     this->components = std::move(components);
-	GL::Game()->MakeObject(this);
+	Gl::Game()->MakeObject(this);
 }
 
 void GameObject::Update() {
@@ -101,20 +100,20 @@ void GameObject::Start() {
         }
     }
 }
-void GL::Start() {
-    for (auto obj : GL::Game()->gameObjects) obj->Start();
+void Gl::Start() {
+    for (auto obj : Gl::Game()->gameObjects) obj->Start();
 }
-void GL::MakeObject(GameObject* obj) {
-    GL::Game()->gameObjects.push_back(obj);
+void Gl::MakeObject(GameObject* obj) {
+    Gl::Game()->gameObjects.push_back(obj);
     for (auto comp : obj->components) comp->parent = obj;
 }
-void GL::Update()
+void Gl::Update()
 {
-    for (GameObject* obj : GL::Game()->gameObjects) {
+    for (GameObject* obj : Gl::Game()->gameObjects) {
         obj->Update();
     }
 }
-void GL::Render() {
+void Gl::Render() {
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
     for (auto tex : renderTextures) {
@@ -131,15 +130,15 @@ void GL::Render() {
         SDL_RenderCopyEx(renderer, tex->texture, nullptr, tex->rect, tex->parent->transform.angle, pivot, flipArgs);
 
     }
-    if (debug) for (auto gameObject : GL::Game()->gameObjects) {
+    if (debug) for (auto gameObject : Gl::Game()->gameObjects) {
         auto* collider = gameObject->GetComponent<Collider>();
-        if (collider) SDL_RenderDrawRect(GL::Game()->renderer, collider->rect);
+        if (collider) SDL_RenderDrawRect(Gl::Game()->renderer, collider->rect);
     }
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderPresent(renderer);
 
 }
-void GL::Clean() const {
+void Gl::Clean() const {
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
@@ -210,11 +209,11 @@ Collider::Collider(double w, double h, bool lock) {
 }
 
 void Collider::Update() {
-    rect->x = parent->transform.TruePos().x - (rect->w * .5);
-    rect->y = parent->transform.TruePos().y - (rect->h * .5);
+    rect->x = parent->transform.TruePosition().x - (rect->w * .5);
+    rect->y = parent->transform.TruePosition().y - (rect->h * .5);
     rect->w = w * parent->transform.scale.x;
     rect->h = h * parent->transform.scale.y;
-    for (auto gameObject : GL::Game()->gameObjects) {
+    for (auto gameObject : Gl::Game()->gameObjects) {
         auto* collider = gameObject->GetComponent<Collider>();
         auto* intersect = new SDL_Rect();
         if (collider) if (this != collider && SDL_IntersectRect(this->rect, collider->rect, intersect)) {
@@ -231,26 +230,22 @@ void Collider::Update() {
         }
     }
 }
-
-[[maybe_unused]] bool Input::GetKey(Key key) {
-    return keys->at(key);
-}
 void Sprite::Update() {
     int w, h;
     SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
-    rect->x = parent->transform.TruePos().x - (w * parent->transform.scale.x) / 2;
-    rect->y = parent->transform.TruePos().y - (h * parent->transform.scale.y) / 2;
+    rect->x = parent->transform.TruePosition().x - (w * parent->transform.scale.x) / 2;
+    rect->y = parent->transform.TruePosition().y - (h * parent->transform.scale.y) / 2;
     rect->w = w * parent->transform.scale.x;
     rect->h = h * parent->transform.scale.y;
 }
-Vector2 GL::GetScreenSize() const {
+Vector2 Gl::GetScreenSize() const {
     int x, y;
-    SDL_GetWindowSize(GL::window, &x, &y);
+    SDL_GetWindowSize(Gl::window, &x, &y);
     return {(double)x, (double)y};
 }
-Vector2 Transform::TruePos() const {
+Vector2 Transform::TruePosition() const {
     Vector2 truePos = Vector2();
-    Vector2 screen = GL::Game()->GetScreenSize();
+    Vector2 screen = Gl::Game()->GetScreenSize();
     truePos.x = (position.x - Camera()->position.x) + (screen.x / 2);
     truePos.y = (-position.y + Camera()->position.y) + (screen.y / 2);
     return truePos;
@@ -258,23 +253,23 @@ Vector2 Transform::TruePos() const {
 
 [[maybe_unused]] void Sprite::SetImage(const char* spr) {
     sprite = spr;
-    texture = IMG_LoadTexture(GL::Game()->renderer, sprite);
+    texture = IMG_LoadTexture(Gl::Game()->renderer, sprite);
     cout << IMG_GetError() << endl;
     int w, h;
     SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
-    rect->x = parent->transform.TruePos().x - (w * parent->transform.scale.x) / 2;
-    rect->y = parent->transform.TruePos().y - (h * parent->transform.scale.y) / 2;
+    rect->x = parent->transform.TruePosition().x - (w * parent->transform.scale.x) / 2;
+    rect->y = parent->transform.TruePosition().y - (h * parent->transform.scale.y) / 2;
     rect->w = w * parent->transform.scale.x;
     rect->h = h * parent->transform.scale.y;
 }
 void Sprite::Start() {
-    texture = IMG_LoadTexture(GL::Game()->renderer, sprite);
+    texture = IMG_LoadTexture(Gl::Game()->renderer, sprite);
     cout << IMG_GetError() << endl;
     int w, h;
     SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
-    rect->x = parent->transform.TruePos().x - (w * parent->transform.scale.x) / 2;
-    rect->y = parent->transform.TruePos().y - (h * parent->transform.scale.y) / 2;
+    rect->x = parent->transform.TruePosition().x - (w * parent->transform.scale.x) / 2;
+    rect->y = parent->transform.TruePosition().y - (h * parent->transform.scale.y) / 2;
     rect->w = w * parent->transform.scale.x;
     rect->h = h * parent->transform.scale.y;
-    GL::Game()->renderTextures.emplace_back(this);
+    Gl::Game()->renderTextures.emplace_back(this);
 }

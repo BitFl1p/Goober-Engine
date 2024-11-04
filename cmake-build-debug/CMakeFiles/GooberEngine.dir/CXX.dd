@@ -1,7 +1,0 @@
-ninja_dyndep_version = 1.0
-build CMakeFiles/GooberEngine.dir/Engine/Main.cpp.o: dyndep
-
-build CMakeFiles/GooberEngine.dir/Engine/Goober.cpp.o: dyndep
-
-build CMakeFiles/GooberEngine.dir/Scripts/Player.cpp.o: dyndep
-
