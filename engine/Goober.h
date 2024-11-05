@@ -36,7 +36,7 @@ namespace goober {
     class GameObject;
     class Component {
     public:
-        GameObject* parent = nullptr;
+        GameObject* gameObject = nullptr;
         Component() = default;
         virtual void Update() {}; virtual void Start() {};
     };

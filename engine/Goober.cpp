@@ -105,7 +105,7 @@ void Gl::Start() {
 }
 void Gl::MakeObject(GameObject* obj) {
     Gl::Game()->gameObjects.push_back(obj);
-    for (auto comp : obj->components) comp->parent = obj;
+    for (auto comp : obj->components) comp->gameObject = obj;
 }
 void Gl::Update()
 {
@@ -127,7 +127,7 @@ void Gl::Render() {
             if (tex->flipY) flipArgs = (SDL_RendererFlip)(flipArgs | SDL_FLIP_VERTICAL);
         }
 
-        SDL_RenderCopyEx(renderer, tex->texture, nullptr, tex->rect, tex->parent->transform.angle, pivot, flipArgs);
+        SDL_RenderCopyEx(renderer, tex->texture, nullptr, tex->rect, tex->gameObject->transform.angle, pivot, flipArgs);
 
     }
     if (debug) for (auto gameObject : Gl::Game()->gameObjects) {
@@ -209,22 +209,22 @@ Collider::Collider(double w, double h, bool lock) {
 }
 
 void Collider::Update() {
-    rect->x = parent->transform.TruePosition().x - (rect->w * .5);
-    rect->y = parent->transform.TruePosition().y - (rect->h * .5);
-    rect->w = w * parent->transform.scale.x;
-    rect->h = h * parent->transform.scale.y;
+    rect->x = gameObject->transform.TruePosition().x - (rect->w * .5);
+    rect->y = gameObject->transform.TruePosition().y - (rect->h * .5);
+    rect->w = w * gameObject->transform.scale.x;
+    rect->h = h * gameObject->transform.scale.y;
     for (auto gameObject : Gl::Game()->gameObjects) {
         auto* collider = gameObject->GetComponent<Collider>();
         auto* intersect = new SDL_Rect();
         if (collider) if (this != collider && SDL_IntersectRect(this->rect, collider->rect, intersect)) {
             if (!locked) {
                 if (intersect->w > intersect->h) {
-                    if (intersect->y > collider->rect->y) parent->transform.position.y -= intersect->h;
-                    else parent->transform.position.y += intersect->h;
+                    if (intersect->y > collider->rect->y) gameObject->transform.position.y -= intersect->h;
+                    else gameObject->transform.position.y += intersect->h;
                 }
                 else if (intersect->h > intersect->w) {
-                    if (intersect->x > collider->rect->x) parent->transform.position.x += intersect->w;
-                    else parent->transform.position.x -= intersect->w;
+                    if (intersect->x > collider->rect->x) gameObject->transform.position.x += intersect->w;
+                    else gameObject->transform.position.x -= intersect->w;
                 }
             }
         }
@@ -233,10 +233,10 @@ void Collider::Update() {
 void Sprite::Update() {
     int w, h;
     SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
-    rect->x = parent->transform.TruePosition().x - (w * parent->transform.scale.x) / 2;
-    rect->y = parent->transform.TruePosition().y - (h * parent->transform.scale.y) / 2;
-    rect->w = w * parent->transform.scale.x;
-    rect->h = h * parent->transform.scale.y;
+    rect->x = gameObject->transform.TruePosition().x - (w * gameObject->transform.scale.x) / 2;
+    rect->y = gameObject->transform.TruePosition().y - (h * gameObject->transform.scale.y) / 2;
+    rect->w = w * gameObject->transform.scale.x;
+    rect->h = h * gameObject->transform.scale.y;
 }
 Vector2 Gl::GetScreenSize() const {
     int x, y;
@@ -257,19 +257,19 @@ Vector2 Transform::TruePosition() const {
     cout << IMG_GetError() << endl;
     int w, h;
     SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
-    rect->x = parent->transform.TruePosition().x - (w * parent->transform.scale.x) / 2;
-    rect->y = parent->transform.TruePosition().y - (h * parent->transform.scale.y) / 2;
-    rect->w = w * parent->transform.scale.x;
-    rect->h = h * parent->transform.scale.y;
+    rect->x = gameObject->transform.TruePosition().x - (w * gameObject->transform.scale.x) / 2;
+    rect->y = gameObject->transform.TruePosition().y - (h * gameObject->transform.scale.y) / 2;
+    rect->w = w * gameObject->transform.scale.x;
+    rect->h = h * gameObject->transform.scale.y;
 }
 void Sprite::Start() {
     texture = IMG_LoadTexture(Gl::Game()->renderer, sprite);
     cout << IMG_GetError() << endl;
     int w, h;
     SDL_QueryTexture(texture, nullptr, nullptr, &w, &h);
-    rect->x = parent->transform.TruePosition().x - (w * parent->transform.scale.x) / 2;
-    rect->y = parent->transform.TruePosition().y - (h * parent->transform.scale.y) / 2;
-    rect->w = w * parent->transform.scale.x;
-    rect->h = h * parent->transform.scale.y;
+    rect->x = gameObject->transform.TruePosition().x - (w * gameObject->transform.scale.x) / 2;
+    rect->y = gameObject->transform.TruePosition().y - (h * gameObject->transform.scale.y) / 2;
+    rect->w = w * gameObject->transform.scale.x;
+    rect->h = h * gameObject->transform.scale.y;
     Gl::Game()->renderTextures.emplace_back(this);
 }
